@@ -1,0 +1,24 @@
+{
+  "intro": [
+    "Viz Creative is an interior design and 3D visualization studio working across residential, commercial, and hospitality projects in Nigeria and beyond.",
+    "We work at the intersection of design and visualization — developing concepts, then rendering them with enough precision that clients can make real decisions before a wall goes up."
+  ],
+  "process": [
+    {
+      "title": "Discovery",
+      "description": "We start by understanding the brief, the site, and the constraints — establishing the foundation everything else builds on."
+    },
+    {
+      "title": "Design",
+      "description": "Mood boards, material palettes, lighting plans, and spatial layouts, refined until every element earns its place."
+    },
+    {
+      "title": "Visualization",
+      "description": "Photorealistic 3D renders that let you experience a space and make informed decisions before construction begins."
+    },
+    {
+      "title": "Implementation",
+      "description": "For turnkey projects, we coordinate vendors, quality control, and installation through to final handover."
+    }
+  ]
+}

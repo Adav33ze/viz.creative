@@ -1,0 +1,28 @@
+{
+  "services": [
+    {
+      "title": "Interior Design",
+      "description": "Space planning, material selection, lighting, and furnishing — resolved into cohesive, purposeful interiors."
+    },
+    {
+      "title": "3D Visualization",
+      "description": "Photorealistic renderings that depict materials, lighting, and spatial relationships with precision."
+    },
+    {
+      "title": "Virtual Reality",
+      "description": "Walk through a designed space and make real-time decisions before anything is built."
+    },
+    {
+      "title": "Space Planning",
+      "description": "Traffic flow, spatial requirements, and ergonomics resolved into layouts that work."
+    },
+    {
+      "title": "Architectural Rendering",
+      "description": "Exterior visualizations that capture materials, scale, and context with realism."
+    },
+    {
+      "title": "Turnkey Solutions",
+      "description": "End-to-end delivery — concept through visualization, sourcing, and final installation."
+    }
+  ]
+}

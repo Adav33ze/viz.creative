@@ -1,0 +1,376 @@
+media:
+  input: public/images/portfolio
+  output: images/portfolio
+  url: https://vizcreative.com
+
+content:
+  - name: hero
+    label: Homepage Hero
+    type: file
+    path: data/hero.json
+    format: json
+    fields:
+      - name: mode
+        label: Hero Mode
+        type: select
+        default: single
+        required: true
+        options:
+          - label: Single Image
+            value: single
+          - label: Slideshow
+            value: slideshow
+          - label: Video
+            value: video
+
+      - name: image
+        label: Hero Image
+        type: image
+
+      - name: alt
+        label: Hero Image Alt Text
+        type: string
+
+      - name: video
+        label: Hero Video
+        type: file
+        options:
+          accept: "video/mp4,video/webm,video/quicktime"
+          input: public/videos/hero
+          output: videos/hero
+
+      - name: videoPoster
+        label: Video Poster / Fallback Image
+        type: image
+
+      - name: videoAlt
+        label: Video Alt / Description Text
+        type: string
+
+      - name: slides
+        label: Hero Slideshow
+        type: object
+        list: true
+        fields:
+          - name: mediaType
+            label: Slide Type
+            type: select
+            options:
+              - label: Image
+                value: image
+              - label: Video
+                value: video
+
+          - name: image
+            label: Slide Image
+            type: image
+
+          - name: video
+            label: Slide Video
+            type: file
+            options:
+              accept: "video/mp4,video/webm,video/quicktime"
+              input: public/videos/hero
+              output: videos/hero
+
+          - name: videoPoster
+            label: Video Poster
+            type: image
+
+          - name: alt
+            label: Alt / Description Text
+            type: string
+
+
+  - name: studio
+    label: Studio Image
+    type: file
+    path: data/studio.json
+    format: json
+    fields:
+      - name: image
+        label: Studio / Founder Image
+        type: image
+
+      - name: alt
+        label: Image Alt Text
+        type: string
+
+
+  - name: portfolio
+    label: Visualization Portfolio
+    type: file
+    path: data/portfolio.json
+    format: json
+    fields:
+      - name: projects
+        label: Projects
+        type: object
+        list: true
+        fields:
+          - name: title
+            label: Project Title
+            type: string
+
+          - name: slug
+            label: URL Slug
+            type: string
+
+          - name: category
+            label: Project Category
+            type: string
+
+          - name: location
+            label: Location
+            type: string
+
+          - name: year
+            label: Project Year
+            type: string
+
+          - name: image
+            label: Cover Image
+            type: image
+
+          - name: alt_text
+            label: Cover Image Alt Text (SEO)
+            type: string
+
+          - name: description
+            label: Short Description
+            type: text
+
+          - name: write_up
+            label: Project Description
+            type: text
+
+          - name: gallery
+            label: Project Gallery
+            type: object
+            list: true
+            fields:
+              - name: mediaType
+                label: Media Type
+                type: select
+                options:
+                  - label: Image
+                    value: image
+                  - label: Video
+                    value: video
+
+              - name: image
+                label: Gallery Image
+                type: image
+
+              - name: video
+                label: Gallery Video
+                type: file
+                options:
+                  accept: "video/mp4,video/webm,video/quicktime"
+                  input: public/videos/portfolio
+                  output: videos/portfolio
+
+              - name: videoPoster
+                label: Video Poster / Thumbnail
+                type: image
+
+              - name: alt_text
+                label: Alt Text (SEO)
+                type: string
+
+
+  - name: journal
+    label: Journal & Insights
+    type: file
+    path: data/journal.json
+    format: json
+    fields:
+      - name: posts
+        label: Posts
+        type: object
+        list: true
+        fields:
+          - name: title
+            label: Post Title
+            type: string
+
+          - name: slug
+            label: URL Slug
+            type: string
+
+          - name: date
+            label: Publication Date
+            type: string
+
+          - name: category
+            label: Category
+            type: string
+
+          - name: coverImage
+            label: Cover Image
+            type: image
+
+          - name: coverImageAlt
+            label: Cover Image Alt Text (SEO)
+            type: string
+
+          - name: excerpt
+            label: Short Excerpt
+            type: text
+
+          - name: body
+            label: Post Body
+            type: text
+
+
+  - name: testimonials
+    label: Client Testimonials
+    type: file
+    path: data/testimonials.json
+    format: json
+    fields:
+      - name: testimonials
+        label: Testimonials
+        type: object
+        list: true
+        fields:
+          - name: quote
+            label: Client Testimonial
+            type: text
+
+          - name: name
+            label: Client Name
+            type: string
+
+          - name: title
+            label: Project / Client Role
+            type: string
+
+          - name: year
+            label: Year
+            type: string
+
+
+  - name: contact
+    label: Contact Details
+    type: file
+    path: data/contact.json
+    format: json
+    fields:
+      - name: email
+        label: Studio Email
+        type: string
+
+      - name: whatsappNumber
+        label: "WhatsApp Number (digits only, with country code)"
+        type: string
+
+      - name: instagramUsername
+        label: "Instagram Username (without @)"
+        type: string
+
+      - name: telegramUsername
+        label: "Telegram Username (without @)"
+        type: string
+
+
+  - name: services
+    label: Visualization Services
+    type: file
+    path: data/services.json
+    format: json
+    fields:
+      - name: services
+        label: Services
+        type: object
+        list: true
+        fields:
+          - name: title
+            label: Service Title
+            type: string
+
+          - name: description
+            label: Service Description
+            type: text
+
+
+  - name: rendering-packages
+    label: Rendering Packages
+    type: file
+    path: data/rendering-packages.json
+    format: json
+    fields:
+      - name: heroImage
+        label: Header Image
+        type: image
+
+      - name: heroImageAlt
+        label: Header Image Alt Text (SEO)
+        type: string
+
+      - name: categories
+        label: Rendering Categories
+        type: object
+        list: true
+        fields:
+          - name: id
+            label: "Category ID (short, no spaces)"
+            type: string
+
+          - name: label
+            label: Category Name
+            type: string
+
+          - name: image
+            label: Category Image
+            type: image
+
+          - name: imageAlt
+            label: Category Image Alt Text (SEO)
+            type: string
+
+          - name: tiers
+            label: Pricing Tiers
+            type: object
+            list: true
+            fields:
+              - name: name
+                label: Package Name
+                type: string
+
+              - name: renderCount
+                label: Number of Renders
+                type: number
+
+              - name: bestFor
+                label: Best For
+                type: string
+
+              - name: turnaround
+                label: Turnaround Time
+                type: string
+
+              - name: price
+                label: Price in USD
+                type: number
+
+              - name: revisionsIncluded
+                label: Revisions Included
+                type: number
+
+      - name: addOns
+        label: Add-ons
+        type: object
+        list: true
+        fields:
+          - name: label
+            label: Add-on Name
+            type: string
+
+          - name: amountUsd
+            label: Price in USD
+            type: number
+
+          - name: isDelta
+            label: "Show + Prefix"
+            type: boolean

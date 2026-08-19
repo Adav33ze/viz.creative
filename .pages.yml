@@ -1,7 +1,19 @@
 media:
-  input: public/images/portfolio
-  output: images/portfolio
-  url: https://vizcreative.com
+  - name: images
+    label: Images
+    input: public/images/portfolio
+    output: images/portfolio
+    categories: [image]
+  - name: hero-videos
+    label: Hero Videos
+    input: public/videos/hero
+    output: videos/hero
+    categories: [video]
+  - name: portfolio-videos
+    label: Portfolio Videos
+    input: public/videos/portfolio
+    output: videos/portfolio
+    categories: [video]
 
 content:
   - name: hero
@@ -36,9 +48,7 @@ content:
         label: Hero Video
         type: file
         options:
-          accept: "video/mp4,video/webm,video/quicktime"
-          input: public/videos/hero
-          output: videos/hero
+          media: hero-videos
 
       - name: videoPoster
         label: Video Poster / Fallback Image
@@ -71,9 +81,7 @@ content:
             label: Slide Video
             type: file
             options:
-              accept: "video/mp4,video/webm,video/quicktime"
-              input: public/videos/hero
-              output: videos/hero
+              media: hero-videos
 
           - name: videoPoster
             label: Video Poster
@@ -169,9 +177,7 @@ content:
                 label: Gallery Video
                 type: file
                 options:
-                  accept: "video/mp4,video/webm,video/quicktime"
-                  input: public/videos/portfolio
-                  output: videos/portfolio
+                  media: portfolio-videos
 
               - name: videoPoster
                 label: Video Poster / Thumbnail

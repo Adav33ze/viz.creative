@@ -133,16 +133,16 @@ export default function Home() {
         <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-brand-600 via-brand-600/40 to-transparent" />
         <div data-hero-content className="relative z-10 max-w-3xl">
           <h1 className="font-display text-5xl md:text-8xl text-white font-light tracking-tight leading-none drop-shadow-md">
-            vizcreative
+            Viz Creative
           </h1>
           <p className="font-body text-base md:text-2xl text-white/60 tracking-wide font-light mt-3 mb-6">
-            /vɪz kriːˈeɪtɪv/ &nbsp; n.
+            DESIGN STUDIO 
           </p>
           <p className="font-display text-2xl md:text-4xl text-white/90 font-light italic leading-snug">
-            spaces, visualized before they exist.
+            Designing spaces. Shaping experiences.
           </p>
           <p className="font-body text-sm md:text-base text-white/70 font-light mt-3 max-w-lg leading-relaxed">
-            An interior design and 3D visualization studio working across residential, commercial, and hospitality projects in Nigeria and beyond.
+         An architecture, interior design, and 3D visualization studio creating refined spaces and compelling visual experiences across residential, commercial, and hospitality projects.
           </p>
           <p className="font-body text-sm text-white/50 uppercase tracking-widest mt-4">
             Abuja, Nigeria
@@ -154,7 +154,7 @@ export default function Home() {
             >
               View Work →
             </Link>
-            <ContactMenu label="Get in Touch" methods={contactMethods} variant="button-dark" className="w-auto" />
+            <ContactMenu label="Get in Touch" methods={contactMethods} variant="button-dark" direction="up" className="w-auto" />
           </div>
         </div>
       </section>

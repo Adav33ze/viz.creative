@@ -274,6 +274,14 @@ content:
         label: "WhatsApp Number (digits only, with country code)"
         type: string
 
+      - name: phoneDisplay
+        label: "Phone Number (display format, e.g. +234 806 550 6222)"
+        type: string
+
+      - name: address
+        label: Studio Address
+        type: string
+
       - name: instagramUsername
         label: "Instagram Username (without @)"
         type: string

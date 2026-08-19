@@ -1,7 +1,13 @@
 {
-  "mode": "video",
+  "mode": "single",
   "image": "images/hero/hero-01.jpg",
   "alt": "Viz Creative interior visualization",
-  "video": "images/portfolio/Hero-1.mp4",
-  "videoPoster": "images/portfolio/Hero Fallback.jpg"
+  "video": "",
+  "videoPoster": "images/hero/hero-01.jpg",
+  "slides": [
+    {
+      "image": "images/hero/hero-01.jpg",
+      "alt": "Viz Creative interior visualization"
+    }
+  ]
 }

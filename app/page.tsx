@@ -13,6 +13,18 @@ export const metadata = {
     'Viz Creative is an interior design and architectural visualization studio based in Abuja, Nigeria.',
 }
 
+// Shape of hero.json as managed through the CMS. Fields are optional
+// here because the CMS doesn't guarantee every field is present on
+// every save — treat this as untrusted input, same as adav33ze.
+interface HeroData {
+  mode: 'single' | 'slideshow' | 'video'
+  image: string
+  video?: string
+  videoPoster?: string
+  alt: string
+  slides: { image: string; alt: string }[]
+}
+
 export default function Home() {
   const projects = portfolioData.projects
   const { intro, process } = aboutData as { intro: string[]; process: { title: string; description: string }[] }
@@ -29,17 +41,95 @@ export default function Home() {
     { label: 'Email', href: `mailto:${email}` },
   ]
 
+  // Defensive hero parsing — same pattern as adav33ze: fall back to
+  // sane defaults instead of a blank hero if any field is missing.
+  const rawHero = heroData as Partial<HeroData>
+  const hero: HeroData = {
+    mode: rawHero.mode ?? 'single',
+    image: rawHero.image ?? '',
+    alt: rawHero.alt ?? '',
+    slides: rawHero.slides ?? [],
+    video: rawHero.video,
+    videoPoster: rawHero.videoPoster,
+  }
+
+  const isSlideshow = hero.mode === 'slideshow' && hero.slides.length > 1
+  const isVideo = hero.mode === 'video' && Boolean(hero.video)
+
   return (
     <div className="min-h-screen bg-brand-500 text-white selection:bg-white selection:text-brand-500">
       <NavBar heroGradient />
 
       {/* HERO */}
       <section data-motion-hero className="relative h-screen w-full bg-brand-600 flex items-end p-6 md:p-12 overflow-hidden">
-        <img
-          src={heroData.image.startsWith('/') ? heroData.image : `/${heroData.image}`}
-          alt={heroData.alt}
-          className="absolute inset-0 w-full h-full object-cover opacity-70"
-        />
+
+        {isVideo ? (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster={(hero.videoPoster || hero.image).startsWith('/') ? (hero.videoPoster || hero.image) : `/${hero.videoPoster || hero.image}`}
+            className="absolute inset-0 h-full w-full object-cover opacity-70"
+          >
+            <source src={hero.video!.startsWith('/') ? hero.video! : `/${hero.video!}`} />
+          </video>
+        ) : isSlideshow ? (
+          /* SLIDESHOW HERO */
+          <>
+            {hero.slides.map((slide, i) => (
+              <img
+                key={i}
+                src={slide.image.startsWith('/') ? slide.image : `/${slide.image}`}
+                alt={slide.alt}
+                data-slide={i}
+                className={`absolute inset-0 w-full h-full object-cover opacity-70 transition-opacity duration-1000 hero-slide ${i === 0 ? 'hero-slide--active' : 'opacity-0'}`}
+              />
+            ))}
+            {/* Slideshow dots */}
+            <div className="absolute bottom-8 right-6 md:right-12 z-10 flex gap-2">
+              {hero.slides.map((_, i) => (
+                <button
+                  key={i}
+                  data-dot={i}
+                  aria-label={`Slide ${i + 1}`}
+                  className={`hero-dot w-1.5 h-1.5 rounded-full transition-all duration-300 ${i === 0 ? 'bg-white' : 'bg-white/30'}`}
+                />
+              ))}
+            </div>
+            <script dangerouslySetInnerHTML={{ __html: `
+              (function() {
+                var slides = document.querySelectorAll('.hero-slide');
+                var dots = document.querySelectorAll('.hero-dot');
+                var current = 0;
+                function goTo(n) {
+                  slides[current].style.opacity = '0';
+                  dots[current].style.background = 'rgba(255,255,255,0.3)';
+                  current = n;
+                  slides[current].style.opacity = '0.7';
+                  dots[current].style.background = 'white';
+                }
+                dots.forEach(function(dot, i) {
+                  dot.addEventListener('click', function() { goTo(i); });
+                });
+                setInterval(function() {
+                  goTo((current + 1) % slides.length);
+                }, 5000);
+              })();
+            `}} />
+          </>
+        ) : (
+          /* SINGLE IMAGE HERO */
+          hero.image && (
+            <img
+              src={hero.image.startsWith('/') ? hero.image : `/${hero.image}`}
+              alt={hero.alt}
+              className="absolute inset-0 w-full h-full object-cover opacity-70"
+            />
+          )
+        )}
+
         <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-brand-600 via-brand-600/40 to-transparent" />
         <div data-hero-content className="relative z-10 max-w-3xl">
           <h1 className="font-display text-5xl md:text-8xl text-white font-light tracking-tight leading-none drop-shadow-md">

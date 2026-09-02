@@ -1,0 +1,106 @@
+{
+  "title": "Choose the visual world",
+  "question": "Which world should VIZ Creative inhabit? Each option keeps the full render visible, restrained type scale, and a direct project-start path.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Datum Field",
+      "kicker": "THE ROLL",
+      "lineage": "surveyor optics, site datums, and instrument plates",
+      "thesis": "The portfolio behaves like a precision instrument for turning spatial intent into a decision.",
+      "palette": ["#123acb", "#ecebe4", "#0b0e13", "#d6ff38"],
+      "materials": ["anodized cobalt", "etched acrylic", "plotter marks"],
+      "viewport": "A fully visible 16:9 showreel sits inside a calibrated cobalt field; a slim datum rail carries the studio name, service line, and a compact project-start action while the frame expands on scroll.",
+      "risk": "The instrument language can feel clinical if the human occupation inside the renders is not allowed to lead.",
+      "raised": [
+        {"from": "Teletext Service", "raise": "Every label earns a fixed information role, so dense sections remain instantly scannable."},
+        {"from": "ASCII Live Scene", "raise": "The hero transformation is continuous and live, but never distorts the original render."},
+        {"from": "Power Hammer", "raise": "The visitor sees a decisive progression from idea to project milestone rather than decorative motion."},
+        {"from": "eBoy Metropolis", "raise": "Deeper scroll reveals useful project-fit detail without shrinking the main work into cards."}
+      ],
+      "comp": ".impeccable/mocks/decision/assigned.png"
+    },
+    {
+      "id": "model-pick",
+      "label": "Material Index",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "architectural material libraries and sample-room index cards",
+      "thesis": "Every service and project reads as a material decision laid out for close inspection.",
+      "palette": ["#e9e5da", "#1a2725", "#b4492d", "#b7bfaa"],
+      "materials": ["uncoated stock", "oxide pigment", "brushed aluminium"],
+      "viewport": "A quiet mineral field holds one uncropped moving render beside a narrow specimen index, with tactile labels and compact actions aligned like sample metadata.",
+      "risk": "Material-library language is highly credible for architecture, but it is also the most familiar grounded direction in this field.",
+      "comp": ".impeccable/mocks/decision/model-pick.png"
+    },
+    {
+      "id": "challenger-daylight",
+      "label": "Daylight Section",
+      "verdict": "competitive",
+      "lineage": "inhabited architectural sections and solar studies",
+      "thesis": "The site is one long inhabited section, with the showreel as the moving band of light that connects idea to occupation.",
+      "palette": ["#efeee7", "#20252a", "#e9b63f", "#7e93a7"],
+      "materials": ["limewash", "section-cut charcoal", "sunlit gold"],
+      "viewport": "A bright sectional composition keeps the full video centered while time stamps, service notes, and a single gold path establish the scroll sequence.",
+      "case": "It identifies immediately with architecture and makes scrollytelling native, while the technical metaphor is slightly narrower than VIZ's interior-design offer.",
+      "risk": "Too many annotations would turn a persuasive portfolio into a diagram rather than an experience.",
+      "comp": ".impeccable/mocks/decision/challenger-daylight.png",
+      "hero": "https://impeccable.style/worlds/cards/architecture-inhabitable-space-daylight-section-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/architecture-inhabitable-space-daylight-section.webp"
+    },
+    {
+      "id": "challenger-teletext",
+      "label": "Teletext Service",
+      "verdict": "declined",
+      "lineage": "broadcast teletext magazines",
+      "thesis": "Services and projects become directly addressable numbered pages.",
+      "palette": ["#000000", "#ffffff", "#ffff00", "#00ffff"],
+      "materials": ["block mosaic", "phosphor screen"],
+      "viewport": "A rigid information grid indexes the showreel and studio offer by page number.",
+      "case": "Strong clarity, but its retro broadcast identity overwhelms the spatial work.",
+      "kept": "Fixed information roles and uncompromising scanability.",
+      "risk": "The studio would read as a media experiment before it reads as an architecture practice.",
+      "hero": "https://impeccable.style/worlds/cards/broadcast-programming-teletext-service-hero.webp"
+    },
+    {
+      "id": "challenger-ascii",
+      "label": "ASCII Live Scene",
+      "verdict": "declined",
+      "lineage": "live scenes rendered as character density",
+      "thesis": "The showreel transforms into a live field of typographic light.",
+      "palette": ["#080b09", "#9dff75", "#e8ffd8"],
+      "materials": ["phosphor", "monospace glyph grid"],
+      "viewport": "One responsive character field reacts to the hero film and resolves into the studio offer.",
+      "case": "Technically memorable, but it destroys the fidelity clients need to judge the render itself.",
+      "kept": "A single continuous transformation rather than scattered effects.",
+      "risk": "The medium would obscure the portfolio's strongest evidence.",
+      "hero": "https://impeccable.style/worlds/cards/medium-native-ascii-live-scene-render-hero.webp"
+    },
+    {
+      "id": "challenger-forge",
+      "label": "Power Hammer",
+      "verdict": "declined",
+      "lineage": "hot-metal forging and measurement marks",
+      "thesis": "Each scroll beat visibly forms an idea into a resolved environment.",
+      "palette": ["#111111", "#696d70", "#ff6a1a", "#fff2cf"],
+      "materials": ["forged steel", "chalk marks", "heat scale"],
+      "viewport": "A dark measured stage reveals one transformation per deliberate scroll strike.",
+      "case": "It explains transformation clearly, but its brutal industrial character contradicts the refined interior work.",
+      "kept": "An unmistakable before-to-after progression.",
+      "risk": "The visual world would promise fabrication more than design and visualization.",
+      "hero": "https://impeccable.style/worlds/cards/metal-forging-patina-blacksmith-scale-shower-hero.webp"
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "comp", "toggle": true},
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard",
+    "thesis": "A polished architectural-visualization portfolio built around full-bleed work, quiet navigation, services, process, and a contact close.",
+    "palette": ["#0d1117", "#f2f0e9", "#b7a58d"],
+    "materials": ["dark gallery", "hairline grid", "neutral project labels"],
+    "viewport": "A full-width showreel sits behind a centered studio statement, followed by a conventional project grid.",
+    "risk": "Credible and elegant, but intentionally difficult to distinguish from other premium visualization studios.",
+    "comp": ".impeccable/mocks/decision/canon.png"
+  },
+  "steer": true
+}

@@ -9,13 +9,29 @@ import contactData from '../data/contact.json'
 
 export const metadata = {
   title: 'Viz Creative — Interior Design & 3D Visualization',
-  description:
-    'Viz Creative is an interior design and architectural visualization studio based in Abuja, Nigeria.',
+  description: 'Interior design and architectural visualization that help clients align, approve, and experience spaces before construction.',
 }
 
-// Shape of hero.json as managed through the CMS. Fields are optional
-// here because the CMS doesn't guarantee every field is present on
-// every save — treat this as untrusted input, same as adav33ze.
+const projectOutcomes = [
+  {
+    label: 'Align',
+    title: 'Make the idea legible.',
+    description: 'Give clients, consultants, and decision-makers one clear visual language for scale, materials, light, and atmosphere.',
+  },
+  {
+    label: 'Approve',
+    title: 'Decide before site.',
+    description: 'Test layouts, finishes, and key moments early—when refinement is faster and far less disruptive.',
+  },
+  {
+    label: 'Present',
+    title: 'Build belief in the vision.',
+    description: 'Create presentation-ready imagery and film for pitches, stakeholder reviews, and property marketing.',
+  },
+]
+
+const briefItems = ['Plans, sketches, or a model', 'Reference images or a mood', 'Required spaces and deliverables', 'Location, timeline, and target milestone']
+
 interface HeroData {
   mode: 'single' | 'slideshow' | 'video'
   image: string
@@ -25,11 +41,26 @@ interface HeroData {
   slides: { image: string; alt: string }[]
 }
 
+function pathFor(path: string) {
+  return path.startsWith('/') ? path : `/${path}`
+}
+
+function RevealText({ text, className = '' }: { text: string; className?: string }) {
+  return (
+    <span className={className} data-text-reveal aria-label={text}>
+      {text.split(/\s+/).map((word, index) => (
+        <span className="reveal-word-clip" aria-hidden="true" key={`${word}-${index}`}>
+          <span data-reveal-word>{word}</span>
+        </span>
+      ))}
+    </span>
+  )
+}
+
 export default function Home() {
   const projects = portfolioData.projects
   const { intro, process } = aboutData as { intro: string[]; process: { title: string; description: string }[] }
   const { services } = servicesData as { services: { title: string; description: string }[] }
-
   const { email, whatsappNumber, phoneDisplay } = contactData as {
     email: string
     whatsappNumber: string
@@ -41,8 +72,6 @@ export default function Home() {
     { label: 'Email', href: `mailto:${email}` },
   ]
 
-  // Defensive hero parsing — same pattern as adav33ze: fall back to
-  // sane defaults instead of a blank hero if any field is missing.
   const rawHero = heroData as Partial<HeroData>
   const hero: HeroData = {
     mode: rawHero.mode ?? 'single',
@@ -52,251 +81,219 @@ export default function Home() {
     video: rawHero.video,
     videoPoster: rawHero.videoPoster,
   }
-
   const isSlideshow = hero.mode === 'slideshow' && hero.slides.length > 1
   const isVideo = hero.mode === 'video' && Boolean(hero.video)
 
   return (
-    <div className="min-h-screen bg-brand-500 text-white selection:bg-white selection:text-brand-500">
+    <div className="min-h-screen bg-brand-500 text-white selection:bg-accent selection:text-brand-700">
       <NavBar heroGradient />
 
-      {/* HERO */}
-      <section data-motion-hero className="relative h-screen w-full bg-brand-600 flex items-end p-6 md:p-12 overflow-hidden">
-
-        {isVideo ? (
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            poster={(hero.videoPoster || hero.image).startsWith('/') ? (hero.videoPoster || hero.image) : `/${hero.videoPoster || hero.image}`}
-            className="absolute inset-0 h-full w-full object-cover opacity-70"
-          >
-            <source src={hero.video!.startsWith('/') ? hero.video! : `/${hero.video!}`} />
-          </video>
-        ) : isSlideshow ? (
-          /* SLIDESHOW HERO */
-          <>
-            {hero.slides.map((slide, i) => (
-              <img
-                key={i}
-                src={slide.image.startsWith('/') ? slide.image : `/${slide.image}`}
-                alt={slide.alt}
-                data-slide={i}
-                className={`absolute inset-0 w-full h-full object-cover opacity-70 transition-opacity duration-1000 hero-slide ${i === 0 ? 'hero-slide--active' : 'opacity-0'}`}
-              />
-            ))}
-            {/* Slideshow dots */}
-            <div className="absolute bottom-8 right-6 md:right-12 z-10 flex gap-2">
-              {hero.slides.map((_, i) => (
-                <button
-                  key={i}
-                  data-dot={i}
-                  aria-label={`Slide ${i + 1}`}
-                  className={`hero-dot w-1.5 h-1.5 rounded-full transition-all duration-300 ${i === 0 ? 'bg-white' : 'bg-white/30'}`}
-                />
-              ))}
-            </div>
-            <script dangerouslySetInnerHTML={{ __html: `
-              (function() {
-                var slides = document.querySelectorAll('.hero-slide');
-                var dots = document.querySelectorAll('.hero-dot');
-                var current = 0;
-                function goTo(n) {
-                  slides[current].style.opacity = '0';
-                  dots[current].style.background = 'rgba(255,255,255,0.3)';
-                  current = n;
-                  slides[current].style.opacity = '0.7';
-                  dots[current].style.background = 'white';
-                }
-                dots.forEach(function(dot, i) {
-                  dot.addEventListener('click', function() { goTo(i); });
-                });
-                setInterval(function() {
-                  goTo((current + 1) % slides.length);
-                }, 5000);
-              })();
-            `}} />
-          </>
-        ) : (
-          /* SINGLE IMAGE HERO */
-          hero.image && (
-            <img
-              src={hero.image.startsWith('/') ? hero.image : `/${hero.image}`}
-              alt={hero.alt}
-              className="absolute inset-0 w-full h-full object-cover opacity-70"
-            />
-          )
-        )}
-
-        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-brand-600 via-brand-600/40 to-transparent" />
-        <div data-hero-content className="relative z-10 max-w-3xl">
-          <h1 className="font-display text-5xl md:text-8xl text-white font-light tracking-tight leading-none drop-shadow-md">
-            Viz Creative
-          </h1>
-          <p className="font-body text-base md:text-2xl text-white/60 tracking-wide font-light mt-3 mb-6">
-            DESIGN STUDIO 
-          </p>
-          <p className="font-display text-2xl md:text-4xl text-white/90 font-light italic leading-snug">
-            Designing spaces. Shaping experiences.
-          </p>
-          <p className="font-body text-sm md:text-base text-white/70 font-light mt-3 max-w-lg leading-relaxed">
-         An architecture, interior design, and 3D visualization studio creating refined spaces and compelling visual experiences across residential, commercial, and hospitality projects.
-          </p>
-          <p className="font-body text-sm text-white/50 uppercase tracking-widest mt-4">
-            Abuja, Nigeria
-          </p>
-          <div className="mt-8 flex gap-4 flex-wrap">
-            <Link
-              href="/work"
-              className="text-xs uppercase tracking-widest bg-white text-brand-500 px-6 py-3 hover:bg-white/85 transition-colors"
-            >
-              View Work →
-            </Link>
-            <ContactMenu label="Get in Touch" methods={contactMethods} variant="button-dark" direction="up" className="w-auto" />
-          </div>
-        </div>
-      </section>
-
-      {/* SELECTED WORK */}
-      <section id="work" data-motion-section className="py-24 px-6 md:px-12 bg-brand-500">
-        <div className="mb-16 flex justify-between items-end">
-          <div>
-            <p className="text-xs uppercase tracking-widest text-white/50 mb-2">Selected Work</p>
-            <h2 className="font-display text-4xl font-light">Projects</h2>
-          </div>
-          <Link
-            href="/work"
-            className="text-xs uppercase tracking-widest text-white/50 hover:text-white transition-colors border-b border-white/20 pb-1"
-          >
-            View All →
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-20">
-          {projects.slice(0, 4).map((project: any, index: number) => (
-            <Link
-              href={`/work/${project.slug}`}
-              key={index}
-              data-motion-card
-              className="group flex flex-col"
-            >
-              <div className="relative aspect-[3/2] w-full bg-white/5 overflow-hidden mb-6 transition-shadow duration-700 ease-out group-hover:shadow-2xl group-hover:-translate-y-1">
-                <img
-                  src={`/${project.image}`}
-                  alt={project.alt_text}
-                  data-motion-image
-                  data-motion-zoom="strong"
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                />
-              </div>
-              <div className="flex flex-col border-t border-white/10 pt-4 gap-3 md:flex-row md:justify-between md:items-start md:gap-0">
-                <div>
-                  <h3 className="font-body text-lg font-normal tracking-tight text-white">
-                    {project.title}
-                  </h3>
-                  <p className="text-xs text-white/50 mt-1">{project.location}</p>
-                  {project.description && (
-                    <p className="text-xs text-white/40 mt-2 font-light leading-relaxed max-w-xs">
-                      {project.description}
-                    </p>
-                  )}
-                </div>
-                <span className="self-start text-xs font-light text-white/60 uppercase tracking-wider bg-white/10 px-3 py-1 rounded-full md:ml-4 md:shrink-0">
-                  {project.category}
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* ABOUT */}
-      <section id="about" data-motion-section className="py-32 px-6 md:px-12 bg-brand-600 border-t border-white/10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          <div className="lg:col-span-7 max-w-2xl">
-            <p className="text-xs uppercase tracking-widest text-white/50 mb-6">About</p>
-            <h2 className="font-display text-4xl md:text-5xl font-light mb-8 leading-tight">
-              Interior design and architectural visualization, built around how spaces are actually used.
-            </h2>
-            <div className="space-y-5 text-white/70 font-light leading-relaxed text-sm md:text-base">
-              {intro.map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
-            </div>
-            <div className="mt-12 flex gap-6 flex-wrap">
-              <Link
-                href="/about"
-                className="text-xs uppercase tracking-widest border-b border-white pb-1 hover:opacity-50 transition-opacity"
+      <section data-motion-hero-mask className="zoom-hero-shell">
+        <div className="zoom-hero-sticky">
+          <div data-hero-mask-frame className="zoom-hero-frame">
+            {isVideo ? (
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster={pathFor(hero.videoPoster || hero.image)}
+                className="zoom-hero-media"
               >
-                Full Profile →
-              </Link>
-              <ContactMenu label="Get in Touch" methods={contactMethods} />
-            </div>
+                <source src={pathFor(hero.video!)} />
+              </video>
+            ) : isSlideshow ? (
+              hero.slides.map((slide, index) => (
+                <img
+                  key={slide.image}
+                  src={pathFor(slide.image)}
+                  alt={index === 0 ? slide.alt : ''}
+                  className={`zoom-hero-media hero-slide ${index === 0 ? 'hero-slide--active' : ''}`}
+                />
+              ))
+            ) : hero.image ? (
+              <img src={pathFor(hero.image)} alt={hero.alt} className="zoom-hero-media" />
+            ) : null}
+            <div className="zoom-hero-shade" />
           </div>
-        </div>
 
-        <div className="mt-24 grid grid-cols-1 md:grid-cols-4 gap-8">
-          {process.map((step, i) => (
-            <div key={step.title} data-motion-card>
-              <span className="text-xs text-white/30 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
-              <h3 className="font-body text-base font-normal text-white mt-2 mb-2">{step.title}</h3>
-              <p className="text-sm font-light text-white/70 leading-relaxed">{step.description}</p>
+          <div className="zoom-hero-content page-pad">
+            <div className="zoom-hero-topline">
+              <p>Interior Design · 3D Visualization</p>
+              <p>Abuja, Nigeria · Working beyond borders</p>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* SERVICES PREVIEW */}
-      <section id="services" data-motion-section className="py-24 px-6 md:px-12 bg-brand-500 border-t border-white/10">
-        <div className="mb-16 flex justify-between items-end">
-          <div>
-            <p className="text-xs uppercase tracking-widest text-white/50 mb-2">Our Expertise</p>
-            <h2 className="font-display text-4xl font-light">Services</h2>
-          </div>
-          <Link
-            href="/services"
-            className="text-xs uppercase tracking-widest text-white/50 hover:text-white transition-colors border-b border-white/20 pb-1"
-          >
-            View All →
-          </Link>
-        </div>
-        <div className="divide-y divide-white/10">
-          {services.slice(0, 4).map((service, i) => (
-            <div key={service.title} className="py-8 first:pt-0 flex gap-6">
-              <span className="text-xs text-white/30 tabular-nums pt-1">{String(i + 1).padStart(2, '0')}</span>
-              <div>
-                <h3 className="font-body text-base font-normal text-white">{service.title}</h3>
-                <p className="text-sm font-light text-white/70 leading-relaxed mt-2 max-w-xl">{service.description}</p>
+            <h1 className="zoom-hero-title" aria-label="Ideas made inhabitable, visible, tangible, and real">
+              <span className="hero-line-clip"><span data-hero-line>Ideas,</span></span>
+              <span className="hero-line-clip zoom-hero-title-offset"><span data-hero-line>made</span></span>
+              <span className="hero-line-clip hero-word-cycle-clip">
+                <span data-hero-line className="hero-word-cycle" aria-hidden="true">
+                  <span>inhabitable.</span><span>visible.</span><span>tangible.</span><span>real.</span>
+                </span>
+              </span>
+            </h1>
+            <div className="zoom-hero-bottom">
+              <p>We help property teams, designers, and private clients align, approve, and experience a space before construction begins.</p>
+              <div className="zoom-hero-actions">
+                <Link href="/work">View our work <span>↘</span></Link>
+                <ContactMenu label="Start a project" methods={contactMethods} variant="button-dark" direction="up" className="w-auto" />
               </div>
             </div>
-          ))}
+          </div>
+          <div className="zoom-hero-index" aria-hidden="true">01 — 07</div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-32 px-6 md:px-12 bg-brand-600 text-white">
-        <div className="max-w-7xl mx-auto">
-          <p className="text-xs uppercase tracking-widest text-white/50 mb-6">Collaboration</p>
-          <h2 className="font-display text-4xl md:text-6xl font-light tracking-tight max-w-2xl mb-12 leading-tight">
-            Got a vision or a bold project in mind? Let's bring it to life.
+      <main>
+        <section data-motion-section className="manifesto page-pad">
+          <div className="section-rule"><span>What drives the work</span><span>01</span></div>
+          <h2 className="manifesto-title">
+            <RevealText text="We design the feeling before the finishes—then resolve every material, light source and line around how the space should live." />
           </h2>
-          <div className="max-w-xs">
-            <ContactMenu label="Get in Touch" methods={contactMethods} variant="button-dark" />
+          <div className="manifesto-foot">
+            <p>{intro[0]} {intro[1]}</p>
+            <span className="studio-seal" aria-hidden="true">VIZ<br />CRTV</span>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* FOOTER */}
-      <footer className="bg-brand-600 text-white/50 text-[10px] uppercase tracking-widest py-8 px-6 md:px-12 border-t border-white/10">
-        <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
-          <p>© 2026 Viz Creative. All rights reserved.</p>
-          <div className="flex flex-col gap-3 md:flex-row md:gap-6 md:items-center">
-            <span className="text-white/40">{contactData.address}</span>
-            <a href={`mailto:${email}`} className="hover:text-white transition-colors">{email}</a>
+        <section id="work" data-motion-section className="showcase page-pad">
+          <div className="section-rule section-rule-light"><span>Selected environment</span><span>02</span></div>
+          <div className="showcase-heading">
+            <h2>Seeing is the first<br /><em>act of building.</em></h2>
+            <div>
+              <p>Photorealistic visualization turns an abstract plan into a place that can be understood, tested and believed in.</p>
+              <Link href="/work">Enter the portfolio ↗</Link>
+            </div>
           </div>
-        </div>
+          <Link href="/work" data-motion-card className="showcase-project group">
+            <div className="showcase-project-media">
+              <img
+                src="/images/portfolio/Hero-Fallback.jpg"
+                alt="Contemporary retail architecture visualized by Viz Creative"
+                data-portfolio-motion
+              />
+              <span className="showcase-project-signal" data-portfolio-signal aria-hidden="true" />
+              <small>Featured study · 01</small>
+              <span>Explore the work ↗</span>
+            </div>
+            <div className="showcase-project-meta">
+              <div><h3>Selected Environments</h3><p>Interior design · Architecture · Visualization</p></div>
+              <p>Abuja, Nigeria / Beyond</p>
+            </div>
+          </Link>
+          {projects.length > 0 && !projects[0].title.startsWith('TODO') ? (
+            <div className="showcase-secondary">
+              {projects.slice(0, 3).map((project: any, index: number) => (
+                <Link href={`/work/${project.slug}`} data-motion-card key={project.slug}>
+                  <span>{String(index + 1).padStart(2, '0')}</span><h3>{project.title}</h3><p>{project.category}</p><i>↗</i>
+                </Link>
+              ))}
+            </div>
+          ) : null}
+        </section>
+
+        <section data-motion-section className="outcomes page-pad">
+          <div className="section-rule"><span>What the work unlocks</span><span>03</span></div>
+          <div className="outcomes-head">
+            <h2>Images are only useful when they <em>move a project forward.</em></h2>
+            <p>Our role is to turn design intent into something people can understand, evaluate, and confidently act on.</p>
+          </div>
+          <div className="outcomes-grid">
+            {projectOutcomes.map((outcome, index) => (
+              <article data-motion-card key={outcome.label}>
+                <div><span>{String(index + 1).padStart(2, '0')}</span><i>{outcome.label}</i></div>
+                <h3>{outcome.title}</h3>
+                <p>{outcome.description}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section data-story-root className="story-shell">
+          <div className="story-visual" aria-hidden="true">
+            <div data-story-media="0" className="story-media story-media--wide is-active"><img src="/images/portfolio/Hero-Fallback.jpg" alt="" /></div>
+            <div data-story-media="1" className="story-media story-media--facade"><img src="/images/portfolio/Hero-Fallback.jpg" alt="" /></div>
+            <div data-story-media="2" className="story-media story-media--detail"><img src="/images/portfolio/Hero-Fallback.jpg" alt="" /></div>
+            <div data-story-media="3" className="story-media story-media--arrival"><img src="/images/portfolio/Hero-Fallback.jpg" alt="" /></div>
+            <div className="story-progress"><span data-story-index>01</span><span>/ 04</span></div>
+          </div>
+          <div className="story-copy page-pad">
+            <header className="story-intro">
+              <div className="section-rule"><span>How a space comes to life</span><span>04</span></div>
+              <h2>One process.<br /><em>Zero guesswork.</em></h2>
+              <p>Scroll through the decisions that connect the first conversation to the final handover.</p>
+            </header>
+            {process.map((step, index) => (
+              <article data-story-step={index} className={`story-step ${index === 0 ? 'is-active' : ''}`} key={step.title}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <h3>{step.title}</h3>
+                <p>{step.description}</p>
+                <div className="story-step-line"><i /><span>{index === 0 ? 'Listen' : index === 1 ? 'Compose' : index === 2 ? 'Experience' : 'Realise'}</span></div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="services" data-motion-section className="capabilities page-pad">
+          <div className="capabilities-head">
+            <div className="section-rule"><span>Capabilities</span><span>05</span></div>
+            <h2>From first thought<br />to final <em>detail.</em></h2>
+          </div>
+          <ol className="capability-list">
+            {services.map((service, index) => (
+              <li data-motion-card key={service.title}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <h3>{service.title}</h3>
+                <p>{service.description}</p>
+                <i aria-hidden="true">↗</i>
+              </li>
+            ))}
+          </ol>
+          <Link href="/services" className="capabilities-link">View services in detail ↗</Link>
+        </section>
+
+        <section id="about" data-motion-section className="about-editorial page-pad">
+          <div className="about-marquee" aria-hidden="true"><span>Spaces that feel inevitable — </span><span>Spaces that feel inevitable — </span></div>
+          <div className="about-editorial-inner">
+            <div className="section-rule section-rule-light"><span>The studio</span><span>06</span></div>
+            <div className="about-editorial-grid">
+              <h2><RevealText text="Design and visualization, speaking the same language from day one." /></h2>
+              <div>
+                {intro.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+                <div className="about-editorial-links"><Link href="/about">About the studio ↗</Link><ContactMenu label="Get in touch" methods={contactMethods} /></div>
+              </div>
+            </div>
+            <div className="about-facts">
+              <div><strong>06</strong><span>Connected capabilities</span></div>
+              <div><strong>04</strong><span>Steps from idea to place</span></div>
+              <div><strong>∞</strong><span>Room for possibility</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact" className="contact-stage page-pad">
+          <div className="section-rule"><span>Collaboration</span><span>07</span></div>
+          <h2><RevealText text="Have a space worth making unforgettable?" /></h2>
+          <div className="project-brief">
+            <div>
+              <span>Starting a brief</span>
+              <p>Send whatever you have. It does not need to be perfectly organized—we will help define the right scope and next step.</p>
+            </div>
+            <ol>
+              {briefItems.map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, '0')}</span>{item}</li>)}
+            </ol>
+          </div>
+          <div className="contact-stage-bottom">
+            <a href={`mailto:${email}`}>Tell us about it <span>↗</span></a>
+            <p>{contactData.address}<br />Available for projects across Nigeria and beyond.</p>
+          </div>
+        </section>
+      </main>
+
+      <footer className="site-footer page-pad">
+        <Link href="/" className="site-footer-mark">VIZ<span>.</span></Link>
+        <p>Interior Design · 3D Visualization</p>
+        <p>© 2026 Viz Creative</p>
       </footer>
     </div>
   )

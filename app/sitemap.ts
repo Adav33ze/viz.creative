@@ -13,12 +13,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.8 },
   ]
 
-  const projectRoutes: MetadataRoute.Sitemap = portfolioData.projects.map((p: any) => ({
+  const projectRoutes: MetadataRoute.Sitemap = portfolioData.projects
+    .filter((p: any) => !p.title.startsWith('TODO') && !p.image.includes('PLACEHOLDER'))
+    .map((p: any) => ({
     url: `${baseUrl}/work/${p.slug}`,
     lastModified: new Date(),
     changeFrequency: 'yearly' as const,
     priority: 0.7,
-  }))
+    }))
 
   return [...staticRoutes, ...projectRoutes]
 }

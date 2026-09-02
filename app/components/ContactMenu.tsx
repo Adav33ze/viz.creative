@@ -43,9 +43,9 @@ export default function ContactMenu({
   }, [])
 
   const triggerClasses = {
-    link: 'text-xs uppercase tracking-widest border-b border-white/30 pb-1 text-white/70 hover:text-white hover:border-white transition-colors',
+    link: 'text-xs uppercase tracking-widest border-b border-accent pb-1 text-white/70 hover:text-accent transition-colors',
     button:
-      'w-full text-center text-xs uppercase tracking-widest py-4 border border-white/40 text-white hover:bg-white hover:text-brand-500 transition-colors',
+      'w-full text-center text-xs uppercase tracking-widest py-4 border border-accent text-white hover:bg-accent hover:text-brand-700 transition-colors',
     'button-dark':
       'w-full text-center text-xs uppercase tracking-widest py-4 border border-white text-white hover:bg-white hover:text-brand-500 transition-colors',
   }[variant]
@@ -76,7 +76,7 @@ export default function ContactMenu({
                 href={m.href}
                 target={isExternal ? '_blank' : undefined}
                 rel={isExternal ? 'noopener noreferrer' : undefined}
-                className="block px-4 py-3 border-b border-white/10 last:border-b-0 text-white hover:bg-white hover:text-brand-500 transition-colors"
+                className="block px-4 py-3 border-b border-white/10 last:border-b-0 text-white hover:bg-accent hover:text-brand-700 transition-colors"
                 onClick={() => setOpen(false)}
               >
                 {m.label}

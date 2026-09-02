@@ -6,8 +6,16 @@ import contactData from '../../data/contact.json'
 
 export const metadata = {
   title: 'Services — Viz Creative',
-  description: 'Interior design, 3D visualization, and turnkey delivery services from Viz Creative, Abuja.',
+  description: 'Interior design, visualization, VR, and turnkey delivery for architects, property teams, and private clients.',
 }
+
+const clientGroups = [
+  { title: 'Architects & designers', body: 'A precise visualization partner for design development, material studies, approvals, and client presentations.' },
+  { title: 'Property teams', body: 'Compelling stills, film, and immersive experiences for stakeholder alignment, investor decks, and marketing.' },
+  { title: 'Private clients', body: 'A clear way to understand layouts, finishes, and atmosphere before committing to construction or procurement.' },
+]
+
+const briefItems = ['Plans, sketches, or BIM model', 'References and desired mood', 'Deliverables and intended use', 'Timeline, location, and milestone']
 
 export default function ServicesPage() {
   const { services } = servicesData as { services: { title: string; description: string }[] }
@@ -21,7 +29,7 @@ export default function ServicesPage() {
     <div className="min-h-screen bg-brand-500 text-white selection:bg-white selection:text-brand-500">
       <NavBar forceLight />
 
-      <header className="pt-40 pb-16 px-6 md:px-12 border-b border-white/10">
+      <header data-motion-section className="subpage-hero pt-40 pb-16 px-6 md:px-12 border-b border-white/10">
         <div className="max-w-7xl mx-auto">
           <p className="text-xs uppercase tracking-widest text-white/50 mb-6">Our Expertise</p>
           <h1 className="font-display text-5xl md:text-7xl font-light tracking-tight leading-tight max-w-3xl">
@@ -30,7 +38,7 @@ export default function ServicesPage() {
         </div>
       </header>
 
-      <section className="py-24 px-6 md:px-12 border-b border-white/10">
+      <section data-motion-section className="py-24 px-6 md:px-12 border-b border-white/10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-4">
             <p className="text-xs uppercase tracking-widest text-white/50">Services</p>
@@ -67,7 +75,31 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="py-32 px-6 md:px-12 bg-brand-600 text-white">
+      <section data-motion-section className="service-fit page-pad">
+        <div className="section-rule"><span>Who we work with</span><span>02</span></div>
+        <div className="service-fit-grid">
+          {clientGroups.map((group, index) => (
+            <article data-motion-card key={group.title}>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <h2>{group.title}</h2>
+              <p>{group.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section data-motion-section className="service-brief page-pad">
+        <div className="service-brief-copy">
+          <p>Start with what you have</p>
+          <h2>A useful brief can be simple.</h2>
+          <span>We will review the material, clarify the scope, and recommend the most useful output for your project milestone.</span>
+        </div>
+        <ol>
+          {briefItems.map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, '0')}</span>{item}</li>)}
+        </ol>
+      </section>
+
+      <section data-motion-section className="subpage-cta py-32 px-6 md:px-12 bg-brand-600 text-white">
         <div className="max-w-7xl mx-auto">
           <p className="text-xs uppercase tracking-widest text-white/50 mb-6">Collaboration</p>
           <h2 className="font-display text-4xl md:text-6xl font-light tracking-tight max-w-2xl mb-12 leading-tight">

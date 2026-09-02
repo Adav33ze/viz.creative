@@ -19,33 +19,32 @@ export default function NavBar({ heroGradient = false }: NavBarProps) {
   }, [])
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50">
-      {heroGradient && !scrolled && (
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-transparent pointer-events-none" />
-      )}
-
+    <nav className={`fixed top-0 left-0 z-50 w-full transition-colors duration-300 ${heroGradient && !scrolled ? 'bg-black/10' : ''}`}>
       <div
         className={`
-          relative flex justify-between items-center
-          px-4 py-5 md:px-12 md:py-6
+          relative flex items-center justify-between border-b
+          px-6 py-5 md:px-12 md:py-6
           transition-all duration-300 ease-in-out
           ${scrolled
-            ? 'bg-brand-500/90 backdrop-blur-md border-b border-white/10 shadow-sm'
-            : 'bg-transparent border-b border-transparent'
+            ? 'border-white/12 bg-brand-700/96'
+            : 'border-white/18 bg-transparent'
           }
         `}
       >
         <Link
           href="/"
-          className="text-xs uppercase tracking-wider md:tracking-widest font-light text-white hover:opacity-50 transition-colors duration-300"
+          className="text-[10px] font-medium uppercase tracking-[0.22em] text-white transition-opacity duration-300 hover:opacity-60"
         >
           VIZ CREATIVE
         </Link>
 
-        <div className="flex gap-4 md:gap-8 text-xs uppercase tracking-wider md:tracking-widest text-white">
-          <Link href="/work" className="hover:opacity-50 transition-opacity">Work</Link>
-          <Link href="/services" className="hover:opacity-50 transition-opacity">Services</Link>
-          <Link href="/about" className="hover:opacity-50 transition-opacity">About</Link>
+        <div className="flex items-center gap-4 text-[9px] uppercase tracking-[0.15em] text-white md:gap-7 md:text-[10px] md:tracking-[0.18em]">
+          <Link href="/work" className="transition-colors hover:text-accent">Work</Link>
+          <Link href="/services" className="transition-colors hover:text-accent">Services</Link>
+          <Link href="/about" className="hidden transition-colors hover:text-accent sm:inline">About</Link>
+          <Link href="/#contact" className="border-b border-accent pb-1 transition-colors hover:border-white">
+            Start<span className="hidden md:inline"> a project</span>
+          </Link>
         </div>
       </div>
     </nav>

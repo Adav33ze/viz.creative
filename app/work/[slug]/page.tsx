@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
 import NavBar from '../../components/NavBar'
 import portfolioData from '../../../data/portfolio.json'
 
@@ -6,13 +7,17 @@ interface PageProps {
   params: Promise<{ slug: string }>
 }
 
+const projects = portfolioData.projects.filter(
+  (project: any) => !project.title.startsWith('TODO') && !project.image.includes('PLACEHOLDER'),
+)
+
 export async function generateStaticParams() {
-  return portfolioData.projects.map((p: any) => ({ slug: p.slug }))
+  return portfolioData.projects.map((project: any) => ({ slug: project.slug }))
 }
 
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params
-  const project = portfolioData.projects.find((p: any) => p.slug === slug)
+  const project = projects.find((item: any) => item.slug === slug)
   return {
     title: project ? `${project.title} — Viz Creative` : 'Project — Viz Creative',
     description: project?.description,
@@ -21,25 +26,14 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function ProjectPage({ params }: PageProps) {
   const { slug } = await params
-  const projectIndex = portfolioData.projects.findIndex((p: any) => p.slug === slug)
-  const project = portfolioData.projects[projectIndex] as any
+  const projectIndex = projects.findIndex((item: any) => item.slug === slug)
+  const project = projects[projectIndex] as any
 
-  const prevProject = projectIndex > 0 ? (portfolioData.projects[projectIndex - 1] as any) : null
-  const nextProject =
-    projectIndex < portfolioData.projects.length - 1 ? (portfolioData.projects[projectIndex + 1] as any) : null
+  if (!project) notFound()
 
-  const hasWriteUp = project?.write_up && !project.write_up.startsWith('TODO')
-
-  if (!project) {
-    return (
-      <div className="min-h-screen bg-brand-500 text-white flex flex-col items-center justify-center p-6">
-        <h1 className="font-display text-2xl font-light mb-4">Project Not Found</h1>
-        <Link href="/work" className="text-xs uppercase tracking-widest border-b border-white pb-1">
-          Return to Work
-        </Link>
-      </div>
-    )
-  }
+  const prevProject = projectIndex > 0 ? (projects[projectIndex - 1] as any) : null
+  const nextProject = projectIndex < projects.length - 1 ? (projects[projectIndex + 1] as any) : null
+  const hasWriteUp = project.write_up && !project.write_up.startsWith('TODO')
 
   return (
     <div className="min-h-screen bg-brand-500 text-white selection:bg-white selection:text-brand-500">

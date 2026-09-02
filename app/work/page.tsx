@@ -8,13 +8,13 @@ export const metadata = {
 }
 
 export default function WorkPage() {
-  const projects = portfolioData.projects
+  const projects = portfolioData.projects.filter((project: any) => !project.title.startsWith('TODO') && !project.image.includes('PLACEHOLDER'))
 
   return (
     <div className="min-h-screen bg-brand-500 text-white selection:bg-white selection:text-brand-500">
       <NavBar forceLight />
 
-      <header data-motion-section className="pt-40 pb-16 px-6 md:px-12 border-b border-white/10">
+      <header data-motion-section className="subpage-hero pt-40 pb-16 px-6 md:px-12 border-b border-white/10">
         <div className="max-w-7xl mx-auto">
           <p className="text-xs uppercase tracking-widest text-white/50 mb-4">Work</p>
           <h1 className="font-display text-4xl md:text-7xl font-light tracking-tight max-w-2xl">
@@ -27,7 +27,7 @@ export default function WorkPage() {
       </header>
 
       <main className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-20">
+        {projects.length ? <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-20">
           {projects.map((project: any, index: number) => (
             <Link
               href={`/work/${project.slug}`}
@@ -56,13 +56,30 @@ export default function WorkPage() {
                     </p>
                   )}
                 </div>
-                <span className="self-start text-xs font-light text-white/60 uppercase tracking-wider bg-white/10 px-3 py-1 rounded-full md:ml-4 md:shrink-0">
+                <span className="self-start border border-accent/60 bg-accent/10 px-3 py-1 text-xs font-light uppercase tracking-wider text-accent md:ml-4 md:shrink-0">
                   {project.category}
                 </span>
               </div>
             </Link>
           ))}
-        </div>
+        </div> : (
+          <section data-motion-section className="work-showreel">
+            <div className="work-showreel-media">
+              <img
+                src="/images/portfolio/Hero-Fallback.jpg"
+                alt="Contemporary retail architecture visualized by Viz Creative"
+                data-portfolio-motion
+              />
+              <span data-portfolio-signal aria-hidden="true" />
+            </div>
+            <div className="work-showreel-copy">
+              <p>Current showreel · 2026</p>
+              <h2>Selected environments, in motion.</h2>
+              <span>Individual case studies are being prepared. In the meantime, this reel brings together our interior, architectural, and visualization work.</span>
+              <Link href="/#contact">Discuss your project ↗</Link>
+            </div>
+          </section>
+        )}
       </main>
 
       <footer className="bg-brand-600 text-white/50 text-[10px] uppercase tracking-widest py-8 px-6 md:px-12 border-t border-white/10">

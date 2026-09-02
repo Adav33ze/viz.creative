@@ -21,7 +21,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-brand-500 text-white selection:bg-white selection:text-brand-500">
       <NavBar forceLight />
 
-      <header className="pt-40 pb-16 px-6 md:px-12 border-b border-white/10">
+      <header data-motion-section className="subpage-hero pt-40 pb-16 px-6 md:px-12 border-b border-white/10">
         <div className="max-w-7xl mx-auto">
           <p className="text-xs uppercase tracking-widest text-white/50 mb-6">Who We Are</p>
           <h1 className="font-display text-5xl md:text-7xl font-light tracking-tight leading-tight max-w-3xl">
@@ -30,7 +30,7 @@ export default function AboutPage() {
         </div>
       </header>
 
-      <section className="py-24 px-6 md:px-12 border-b border-white/10">
+      <section data-motion-section className="py-24 px-6 md:px-12 border-b border-white/10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-4">
             <p className="text-xs uppercase tracking-widest text-white/50">Introduction</p>
@@ -43,7 +43,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-24 px-6 md:px-12 border-b border-white/10">
+      <section data-motion-section className="py-24 px-6 md:px-12 border-b border-white/10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-4">
             <p className="text-xs uppercase tracking-widest text-white/50">How We Work</p>
@@ -62,7 +62,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-32 px-6 md:px-12 bg-brand-600 text-white">
+      <section data-motion-section className="subpage-cta py-32 px-6 md:px-12 bg-brand-600 text-white">
         <div className="max-w-7xl mx-auto">
           <p className="text-xs uppercase tracking-widest text-white/50 mb-6">Collaboration</p>
           <h2 className="font-display text-4xl md:text-6xl font-light tracking-tight max-w-2xl mb-12 leading-tight">

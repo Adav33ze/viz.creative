@@ -1,14 +1,23 @@
 import Link from 'next/link'
 import NavBar from '../components/NavBar'
 import portfolioData from '../../data/portfolio.json'
+import workData from '../../data/work.json'
+import siteData from '../../data/site.json'
 
 export const metadata = {
-  title: 'Work — Viz Creative',
-  description: 'Selected interior design and 3D visualization projects by Viz Creative.',
+  title: workData.seo.title,
+  description: workData.seo.description,
+}
+
+function pathFor(path: string) {
+  return path.startsWith('/') ? path : `/${path}`
 }
 
 export default function WorkPage() {
-  const projects = portfolioData.projects.filter((project: any) => !project.title.startsWith('TODO') && !project.image.includes('PLACEHOLDER'))
+  const projects = portfolioData.projects
+    .filter((project) => project.published)
+    .sort((a, b) => Number(b.featured) - Number(a.featured))
+  const { hero, emptyState } = workData
 
   return (
     <div className="min-h-screen bg-brand-500 text-white selection:bg-white selection:text-brand-500">
@@ -16,12 +25,12 @@ export default function WorkPage() {
 
       <header data-motion-section className="subpage-hero pt-40 pb-16 px-6 md:px-12 border-b border-white/10">
         <div className="max-w-7xl mx-auto">
-          <p className="text-xs uppercase tracking-widest text-white/50 mb-4">Work</p>
+          <p className="text-xs uppercase tracking-widest text-white/50 mb-4">{hero.label}</p>
           <h1 className="font-display text-4xl md:text-7xl font-light tracking-tight max-w-2xl">
-            Selected projects.
+            {hero.heading}
           </h1>
           <p className="mt-6 text-sm font-light text-white/50 max-w-xl">
-            Residential, commercial, and hospitality projects across Nigeria and beyond.
+            {hero.description}
           </p>
         </div>
       </header>
@@ -37,7 +46,7 @@ export default function WorkPage() {
             >
               <div className="relative aspect-[3/2] w-full bg-white/5 overflow-hidden mb-6 transition-shadow duration-700 ease-out group-hover:shadow-2xl group-hover:-translate-y-1">
                 <img
-                  src={`/${project.image}`}
+                  src={pathFor(project.image)}
                   alt={project.alt_text}
                   data-motion-image
                   data-motion-zoom="strong"
@@ -66,17 +75,17 @@ export default function WorkPage() {
           <section data-motion-section className="work-showreel">
             <div className="work-showreel-media">
               <img
-                src="/images/portfolio/Hero-Fallback.jpg"
-                alt="Contemporary retail architecture visualized by Viz Creative"
+                src={pathFor(emptyState.image)}
+                alt={emptyState.imageAlt}
                 data-portfolio-motion
               />
               <span data-portfolio-signal aria-hidden="true" />
             </div>
             <div className="work-showreel-copy">
-              <p>Current showreel · 2026</p>
-              <h2>Selected environments, in motion.</h2>
-              <span>Individual case studies are being prepared. In the meantime, this reel brings together our interior, architectural, and visualization work.</span>
-              <Link href="/#contact">Discuss your project ↗</Link>
+              <p>{emptyState.label}</p>
+              <h2>{emptyState.heading}</h2>
+              <span>{emptyState.description}</span>
+              <Link href="/#contact">{emptyState.linkLabel} ↗</Link>
             </div>
           </section>
         )}
@@ -84,7 +93,7 @@ export default function WorkPage() {
 
       <footer className="bg-brand-600 text-white/50 text-[10px] uppercase tracking-widest py-8 px-6 md:px-12 border-t border-white/10">
         <div className="flex flex-col gap-3 md:flex-row md:justify-between md:items-center">
-          <p>© 2026 Viz Creative. All rights reserved.</p>
+          <p>{siteData.footer.copyright}</p>
           <Link href="/" className="hover:text-white transition-colors">Back to Home</Link>
         </div>
       </footer>

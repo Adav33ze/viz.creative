@@ -1,0 +1,19 @@
+{
+  "seo": {
+    "title": "Work — Viz Creative",
+    "description": "Selected interior design and 3D visualization projects by Viz Creative."
+  },
+  "hero": {
+    "label": "Work",
+    "heading": "Selected projects.",
+    "description": "Residential, commercial, and hospitality projects across Nigeria and beyond."
+  },
+  "emptyState": {
+    "image": "/images/portfolio/Hero-Fallback.jpg",
+    "imageAlt": "Contemporary retail architecture visualized by Viz Creative",
+    "label": "Current showreel · 2026",
+    "heading": "Selected environments, in motion.",
+    "description": "Individual case studies are being prepared. In the meantime, this reel brings together our interior, architectural, and visualization work.",
+    "linkLabel": "Discuss your project"
+  }
+}

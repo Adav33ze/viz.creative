@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import siteData from '../../data/site.json'
 
 interface NavBarProps {
   forceLight?: boolean
@@ -35,15 +36,15 @@ export default function NavBar({ heroGradient = false }: NavBarProps) {
           href="/"
           className="text-[10px] font-medium uppercase tracking-[0.22em] text-white transition-opacity duration-300 hover:opacity-60"
         >
-          VIZ CREATIVE
+          {siteData.brandName}
         </Link>
 
         <div className="flex items-center gap-4 text-[9px] uppercase tracking-[0.15em] text-white md:gap-7 md:text-[10px] md:tracking-[0.18em]">
-          <Link href="/work" className="transition-colors hover:text-accent">Work</Link>
-          <Link href="/services" className="transition-colors hover:text-accent">Services</Link>
-          <Link href="/about" className="hidden transition-colors hover:text-accent sm:inline">About</Link>
+          <Link href="/work" className="transition-colors hover:text-accent">{siteData.nav.work}</Link>
+          <Link href="/services" className="transition-colors hover:text-accent">{siteData.nav.services}</Link>
+          <Link href="/about" className="hidden transition-colors hover:text-accent sm:inline">{siteData.nav.about}</Link>
           <Link href="/#contact" className="border-b border-accent pb-1 transition-colors hover:border-white">
-            Start<span className="hidden md:inline"> a project</span>
+            {siteData.nav.contact}
           </Link>
         </div>
       </div>

@@ -1,4 +1,17 @@
 {
+  "seo": {
+    "title": "Services — Viz Creative",
+    "description": "Interior design, visualization, VR, and turnkey delivery for architects, property teams, and private clients."
+  },
+  "hero": {
+    "label": "Our Expertise",
+    "heading": "Design excellence, paired with technical precision."
+  },
+  "intro": {
+    "label": "Services",
+    "description": "Every project is scoped individually. Get in touch for a quote.",
+    "enquiryLabel": "Enquire"
+  },
   "services": [
     {
       "title": "Interior Design",
@@ -24,5 +37,36 @@
       "title": "Turnkey Solutions",
       "description": "End-to-end delivery — concept through visualization, sourcing, and final installation."
     }
-  ]
+  ],
+  "clientGroups": [
+    {
+      "title": "Architects & designers",
+      "description": "A precise visualization partner for design development, material studies, approvals, and client presentations."
+    },
+    {
+      "title": "Property teams",
+      "description": "Compelling stills, film, and immersive experiences for stakeholder alignment, investor decks, and marketing."
+    },
+    {
+      "title": "Private clients",
+      "description": "A clear way to understand layouts, finishes, and atmosphere before committing to construction or procurement."
+    }
+  ],
+  "audienceLabel": "Who we work with",
+  "brief": {
+    "label": "Start with what you have",
+    "heading": "A useful brief can be simple.",
+    "description": "We will review the material, clarify the scope, and recommend the most useful output for your project milestone.",
+    "items": [
+      "Plans, sketches, or BIM model",
+      "References and desired mood",
+      "Deliverables and intended use",
+      "Timeline, location, and milestone"
+    ]
+  },
+  "cta": {
+    "label": "Collaboration",
+    "heading": "Have a project in mind? Let's talk it through.",
+    "buttonLabel": "Get in Touch"
+  }
 }

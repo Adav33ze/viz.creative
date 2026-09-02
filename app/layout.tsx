@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, Cormorant_Garamond } from 'next/font/google'
 import './globals.css'
 import ScrollMotion from './components/ScrollMotion'
+import siteData from '../data/site.json'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -15,9 +16,8 @@ const cormorant = Cormorant_Garamond({
 })
 
 export const metadata: Metadata = {
-  title: 'Viz Creative — Interior Design & 3D Visualization',
-  description:
-    'Viz Creative is an interior design and architectural visualization studio based in Abuja, Nigeria, working across residential, commercial, and hospitality projects.',
+  title: siteData.seo.title,
+  description: siteData.seo.description,
 }
 
 export default function RootLayout({

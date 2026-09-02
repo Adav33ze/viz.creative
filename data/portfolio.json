@@ -1,10 +1,13 @@
 {
   "projects": [
     {
+      "published": false,
+      "featured": false,
       "title": "TODO: Project Title",
       "slug": "todo-project-one",
       "category": "Interior Design",
       "location": "Abuja, Nigeria",
+      "year": "2026",
       "image": "images/portfolio/PLACEHOLDER.jpg",
       "alt_text": "TODO: describe the real project image for SEO",
       "description": "TODO: one-line description of the real project.",

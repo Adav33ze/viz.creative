@@ -3,22 +3,15 @@ import NavBar from '../components/NavBar'
 import ContactMenu from '../components/ContactMenu'
 import servicesData from '../../data/services.json'
 import contactData from '../../data/contact.json'
+import siteData from '../../data/site.json'
 
 export const metadata = {
-  title: 'Services — Viz Creative',
-  description: 'Interior design, visualization, VR, and turnkey delivery for architects, property teams, and private clients.',
+  title: servicesData.seo.title,
+  description: servicesData.seo.description,
 }
 
-const clientGroups = [
-  { title: 'Architects & designers', body: 'A precise visualization partner for design development, material studies, approvals, and client presentations.' },
-  { title: 'Property teams', body: 'Compelling stills, film, and immersive experiences for stakeholder alignment, investor decks, and marketing.' },
-  { title: 'Private clients', body: 'A clear way to understand layouts, finishes, and atmosphere before committing to construction or procurement.' },
-]
-
-const briefItems = ['Plans, sketches, or BIM model', 'References and desired mood', 'Deliverables and intended use', 'Timeline, location, and milestone']
-
 export default function ServicesPage() {
-  const { services } = servicesData as { services: { title: string; description: string }[] }
+  const { hero, intro, services, clientGroups, audienceLabel, brief, cta } = servicesData
   const { email, whatsappNumber } = contactData as { email: string; whatsappNumber: string }
   const contactMethods = [
     { label: 'WhatsApp', href: `https://wa.me/${whatsappNumber}` },
@@ -31,9 +24,9 @@ export default function ServicesPage() {
 
       <header data-motion-section className="subpage-hero pt-40 pb-16 px-6 md:px-12 border-b border-white/10">
         <div className="max-w-7xl mx-auto">
-          <p className="text-xs uppercase tracking-widest text-white/50 mb-6">Our Expertise</p>
+          <p className="text-xs uppercase tracking-widest text-white/50 mb-6">{hero.label}</p>
           <h1 className="font-display text-5xl md:text-7xl font-light tracking-tight leading-tight max-w-3xl">
-            Design excellence, paired with technical precision.
+            {hero.heading}
           </h1>
         </div>
       </header>
@@ -41,9 +34,9 @@ export default function ServicesPage() {
       <section data-motion-section className="py-24 px-6 md:px-12 border-b border-white/10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-4">
-            <p className="text-xs uppercase tracking-widest text-white/50">Services</p>
+            <p className="text-xs uppercase tracking-widest text-white/50">{intro.label}</p>
             <p className="text-sm font-light text-white/50 mt-4 max-w-xs">
-              Every project is scoped individually. Get in touch for a quote.
+              {intro.description}
             </p>
           </div>
           <div className="lg:col-span-8 divide-y divide-white/10">
@@ -64,7 +57,7 @@ export default function ServicesPage() {
                   </div>
                 </div>
                 <ContactMenu
-                  label="Enquire"
+                  label={intro.enquiryLabel}
                   methods={contactMethods}
                   align="right"
                   className="shrink-0 ml-10 md:ml-0"
@@ -76,13 +69,13 @@ export default function ServicesPage() {
       </section>
 
       <section data-motion-section className="service-fit page-pad">
-        <div className="section-rule"><span>Who we work with</span><span>02</span></div>
+        <div className="section-rule"><span>{audienceLabel}</span><span>02</span></div>
         <div className="service-fit-grid">
           {clientGroups.map((group, index) => (
             <article data-motion-card key={group.title}>
               <span>{String(index + 1).padStart(2, '0')}</span>
               <h2>{group.title}</h2>
-              <p>{group.body}</p>
+              <p>{group.description}</p>
             </article>
           ))}
         </div>
@@ -90,29 +83,29 @@ export default function ServicesPage() {
 
       <section data-motion-section className="service-brief page-pad">
         <div className="service-brief-copy">
-          <p>Start with what you have</p>
-          <h2>A useful brief can be simple.</h2>
-          <span>We will review the material, clarify the scope, and recommend the most useful output for your project milestone.</span>
+          <p>{brief.label}</p>
+          <h2>{brief.heading}</h2>
+          <span>{brief.description}</span>
         </div>
         <ol>
-          {briefItems.map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, '0')}</span>{item}</li>)}
+          {brief.items.map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, '0')}</span>{item}</li>)}
         </ol>
       </section>
 
       <section data-motion-section className="subpage-cta py-32 px-6 md:px-12 bg-brand-600 text-white">
         <div className="max-w-7xl mx-auto">
-          <p className="text-xs uppercase tracking-widest text-white/50 mb-6">Collaboration</p>
+          <p className="text-xs uppercase tracking-widest text-white/50 mb-6">{cta.label}</p>
           <h2 className="font-display text-4xl md:text-6xl font-light tracking-tight max-w-2xl mb-12 leading-tight">
-            Have a project in mind? Let's talk it through.
+            {cta.heading}
           </h2>
           <div className="max-w-xs">
-            <ContactMenu label="Get in Touch" methods={contactMethods} variant="button-dark" />
+            <ContactMenu label={cta.buttonLabel} methods={contactMethods} variant="button-dark" />
           </div>
         </div>
       </section>
 
       <footer className="bg-brand-600 text-white/50 text-[10px] uppercase tracking-widest py-8 px-6 md:px-12 flex justify-between items-center border-t border-white/10">
-        <p>© 2026 Viz Creative. All rights reserved.</p>
+        <p>{siteData.footer.copyright}</p>
         <Link href="/" className="hover:text-white transition-colors">Back to Home</Link>
       </footer>
     </div>

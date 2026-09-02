@@ -2,17 +2,24 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import NavBar from '../../components/NavBar'
 import portfolioData from '../../../data/portfolio.json'
+import siteData from '../../../data/site.json'
 
 interface PageProps {
   params: Promise<{ slug: string }>
 }
 
-const projects = portfolioData.projects.filter(
-  (project: any) => !project.title.startsWith('TODO') && !project.image.includes('PLACEHOLDER'),
-)
+const projects = portfolioData.projects
+  .filter((project) => project.published)
+  .sort((a, b) => Number(b.featured) - Number(a.featured))
+
+function pathFor(path: string) {
+  return path.startsWith('/') ? path : `/${path}`
+}
 
 export async function generateStaticParams() {
-  return portfolioData.projects.map((project: any) => ({ slug: project.slug }))
+  // Static export requires one generated route even when every entry is still a draft.
+  // Draft routes resolve to the site's 404 because lookup below only uses published projects.
+  return portfolioData.projects.map((project) => ({ slug: project.slug }))
 }
 
 export async function generateMetadata({ params }: PageProps) {
@@ -41,7 +48,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
       <section data-motion-hero className="relative h-[88vh] w-full bg-brand-600 overflow-hidden flex items-end p-6 md:p-12">
         <img
-          src={`/${project.image}`}
+          src={pathFor(project.image)}
           alt={project.alt_text}
           className="absolute inset-0 w-full h-full object-cover opacity-90"
         />
@@ -61,6 +68,10 @@ export default async function ProjectPage({ params }: PageProps) {
           <div>
             <p className="text-white/50 mb-1">Category</p>
             <p className="text-white">{project.category}</p>
+          </div>
+          <div>
+            <p className="text-white/50 mb-1">Year</p>
+            <p className="text-white">{project.year}</p>
           </div>
         </div>
         <div className="lg:col-span-8 border-t border-white/10 pt-8">
@@ -94,13 +105,26 @@ export default async function ProjectPage({ params }: PageProps) {
           <div className="space-y-6">
             {project.gallery.map((item: any, i: number) => (
               <div key={i} data-motion-card className="relative w-full overflow-hidden bg-white/5 aspect-[3/2]">
-                <img
-                  src={`/${item.image}`}
-                  alt={item.alt_text}
-                  data-motion-image
-                  data-motion-zoom="strong"
-                  className="w-full h-full object-cover"
-                />
+                {item.mediaType === 'video' && item.video ? (
+                  <video
+                    controls
+                    playsInline
+                    preload="metadata"
+                    poster={item.videoPoster ? pathFor(item.videoPoster) : undefined}
+                    aria-label={item.alt_text}
+                    className="w-full h-full object-cover"
+                  >
+                    <source src={pathFor(item.video)} />
+                  </video>
+                ) : item.image ? (
+                  <img
+                    src={pathFor(item.image)}
+                    alt={item.alt_text}
+                    data-motion-image
+                    data-motion-zoom="strong"
+                    className="w-full h-full object-cover"
+                  />
+                ) : null}
               </div>
             ))}
           </div>
@@ -134,7 +158,7 @@ export default async function ProjectPage({ params }: PageProps) {
       <footer className="bg-brand-600 text-white/50 text-[10px] uppercase tracking-widest py-8 px-6 md:px-12 border-t border-white/10">
         <div className="flex flex-col gap-3 md:flex-row md:justify-between md:items-center">
           <Link href="/work" className="hover:text-white transition-colors">← All Work</Link>
-          <p>© 2026 Viz Creative. All rights reserved.</p>
+        <p>{siteData.footer.copyright}</p>
         </div>
       </footer>
     </div>

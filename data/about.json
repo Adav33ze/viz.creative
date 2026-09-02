@@ -1,4 +1,16 @@
 {
+  "seo": {
+    "title": "About — Viz Creative",
+    "description": "Viz Creative is an interior design and 3D visualization studio based in Abuja, Nigeria."
+  },
+  "hero": {
+    "label": "Who We Are",
+    "heading": "Interior design and architectural visualization, built around how spaces are actually used."
+  },
+  "labels": {
+    "introduction": "Introduction",
+    "process": "How We Work"
+  },
   "intro": [
     "Viz Creative is an interior design and 3D visualization studio working across residential, commercial, and hospitality projects in Nigeria and beyond.",
     "We work at the intersection of design and visualization — developing concepts, then rendering them with enough precision that clients can make real decisions before a wall goes up."
@@ -6,19 +18,28 @@
   "process": [
     {
       "title": "Discovery",
+      "stage": "Listen",
       "description": "We start by understanding the brief, the site, and the constraints — establishing the foundation everything else builds on."
     },
     {
       "title": "Design",
+      "stage": "Compose",
       "description": "Mood boards, material palettes, lighting plans, and spatial layouts, refined until every element earns its place."
     },
     {
       "title": "Visualization",
+      "stage": "Experience",
       "description": "Photorealistic 3D renders that let you experience a space and make informed decisions before construction begins."
     },
     {
       "title": "Implementation",
+      "stage": "Realise",
       "description": "For turnkey projects, we coordinate vendors, quality control, and installation through to final handover."
     }
-  ]
+  ],
+  "cta": {
+    "label": "Collaboration",
+    "heading": "Have a project in mind? Let's talk it through.",
+    "buttonLabel": "Get in Touch"
+  }
 }

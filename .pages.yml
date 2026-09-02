@@ -1,393 +1,553 @@
+settings:
+  content:
+    merge: true
+  commit:
+    identity: user
+    templates:
+      create: "content: add {path}"
+      update: "content: update {path}"
+      delete: "content: remove {path}"
+      rename: "content: rename {oldPath} to {newPath}"
+
 media:
-  - name: images
-    label: Images
+  - name: project-images
+    label: Project images
     input: public/images/portfolio
-    output: images/portfolio
+    output: /images/portfolio
     categories: [image]
+    extensions: [jpg, jpeg, png, webp, avif]
+    rename: safe
   - name: hero-videos
-    label: Hero Videos
+    label: Hero videos
     input: public/videos/hero
-    output: videos/hero
+    output: /videos/hero
     categories: [video]
-  - name: portfolio-videos
-    label: Portfolio Videos
+    extensions: [mp4, webm]
+    rename: safe
+  - name: project-videos
+    label: Project videos
     input: public/videos/portfolio
-    output: videos/portfolio
+    output: /videos/portfolio
     categories: [video]
+    extensions: [mp4, webm]
+    rename: safe
+
+components:
+  seo:
+    type: object
+    label: Search & sharing
+    description: Controls the title and description shown in search results and shared links.
+    fields:
+      - name: title
+        label: Page title
+        type: string
+        required: true
+        description: Aim for 50–60 characters.
+        options:
+          maxlength: 65
+      - name: description
+        label: Page description
+        type: text
+        required: true
+        description: Aim for 140–160 characters.
+        options:
+          maxlength: 170
+  cta:
+    type: object
+    label: Call to action
+    fields:
+      - { name: label, label: Eyebrow, type: string, required: true }
+      - { name: heading, label: Heading, type: string, required: true }
+      - { name: buttonLabel, label: Button label, type: string, required: true }
 
 content:
-  - name: hero
-    label: Homepage Hero
-    type: file
-    path: data/hero.json
-    format: json
-    fields:
-      - name: mode
-        label: Hero Mode
-        type: select
-        default: single
-        required: true
-        options:
-          values:
-            - label: Single Image
-              value: single
-            - label: Slideshow
-              value: slideshow
-            - label: Video
-              value: video
-
-      - name: image
-        label: Hero Image
-        type: image
-
-      - name: alt
-        label: Hero Image Alt Text
-        type: string
-
-      - name: video
-        label: Hero Video
+  - name: site
+    label: Site settings
+    type: group
+    items:
+      - name: site-settings
+        label: Brand, navigation & SEO
         type: file
-        options:
-          media: hero-videos
-
-      - name: videoPoster
-        label: Video Poster / Fallback Image
-        type: image
-
-      - name: videoAlt
-        label: Video Alt / Description Text
-        type: string
-
-      - name: slides
-        label: Hero Slideshow
-        type: object
-        list: true
+        path: data/site.json
+        format: json
         fields:
-          - name: mediaType
-            label: Slide Type
+          - { name: brandName, label: Brand name, type: string, required: true }
+          - { name: serviceLine, label: Service line, type: string, required: true }
+          - name: nav
+            label: Navigation labels
+            type: object
+            fields:
+              - { name: work, label: Work, type: string, required: true }
+              - { name: services, label: Services, type: string, required: true }
+              - { name: about, label: About, type: string, required: true }
+              - { name: contact, label: Contact action, type: string, required: true }
+          - name: footer
+            label: Footer
+            type: object
+            fields:
+              - { name: descriptor, label: Descriptor, type: string, required: true }
+              - { name: copyright, label: Copyright, type: string, required: true }
+          - name: seo
+            component: seo
+      - name: contact
+        label: Contact details
+        type: file
+        path: data/contact.json
+        format: json
+        fields:
+          - { name: email, label: Studio email, type: string, required: true }
+          - name: whatsappNumber
+            label: WhatsApp number
+            type: string
+            required: true
+            description: Country code and digits only, without + or spaces.
+            pattern:
+              regex: "^[0-9]{8,15}$"
+              message: Use 8–15 digits only.
+          - { name: phoneDisplay, label: Display phone number, type: string, required: true }
+          - { name: address, label: Studio address, type: string, required: true }
+          - { name: instagramUsername, label: Instagram username, type: string, description: Enter without @. }
+          - { name: telegramUsername, label: Telegram username, type: string, description: Enter without @. }
+
+  - name: homepage
+    label: Homepage
+    type: group
+    items:
+      - name: hero-media
+        label: Hero media
+        type: file
+        path: data/hero.json
+        format: json
+        fields:
+          - name: mode
+            label: Hero format
             type: select
+            required: true
+            default: single
             options:
               values:
-                - label: Image
-                  value: image
-                - label: Video
-                  value: video
-
+                - { label: Single image, value: single }
+                - { label: Slideshow, value: slideshow }
+                - { label: Video, value: video }
           - name: image
-            label: Slide Image
+            label: Main image
             type: image
-
+            required: true
+            options:
+              media: project-images
+          - { name: alt, label: Main image alt text, type: string, required: true }
           - name: video
-            label: Slide Video
+            label: Hero video
             type: file
+            description: Used only in Video mode.
             options:
               media: hero-videos
-
           - name: videoPoster
-            label: Video Poster
+            label: Video poster
             type: image
-
-          - name: alt
-            label: Alt / Description Text
-            type: string
-
-
-  - name: studio
-    label: Studio Image
-    type: file
-    path: data/studio.json
-    format: json
-    fields:
-      - name: image
-        label: Studio / Founder Image
-        type: image
-
-      - name: alt
-        label: Image Alt Text
-        type: string
-
-
-  - name: portfolio
-    label: Visualization Portfolio
-    type: file
-    path: data/portfolio.json
-    format: json
-    fields:
-      - name: projects
-        label: Projects
-        type: object
-        list: true
-        fields:
-          - name: title
-            label: Project Title
-            type: string
-
-          - name: slug
-            label: URL Slug
-            type: string
-
-          - name: category
-            label: Project Category
-            type: string
-
-          - name: location
-            label: Location
-            type: string
-
-          - name: year
-            label: Project Year
-            type: string
-
-          - name: image
-            label: Cover Image
-            type: image
-
-          - name: alt_text
-            label: Cover Image Alt Text (SEO)
-            type: string
-
-          - name: description
-            label: Short Description
-            type: text
-
-          - name: write_up
-            label: Project Description
-            type: text
-
-          - name: gallery
-            label: Project Gallery
+            options:
+              media: project-images
+          - { name: videoAlt, label: Video description, type: string }
+          - name: slides
+            label: Slideshow slides
             type: object
-            list: true
+            list:
+              collapsible: true
+              summary: "{fields.alt}"
+              min: 1
+              max: 8
             fields:
               - name: mediaType
-                label: Media Type
+                label: Media type
                 type: select
+                default: image
                 options:
                   values:
-                    - label: Image
-                      value: image
-                    - label: Video
-                      value: video
-
+                    - { label: Image, value: image }
+                    - { label: Video, value: video }
               - name: image
-                label: Gallery Image
+                label: Image
                 type: image
-
+                options:
+                  media: project-images
               - name: video
-                label: Gallery Video
+                label: Video
                 type: file
                 options:
-                  media: portfolio-videos
-
+                  media: hero-videos
               - name: videoPoster
-                label: Video Poster / Thumbnail
+                label: Video poster
                 type: image
-
-              - name: alt_text
-                label: Alt Text (SEO)
-                type: string
-
-
-  - name: journal
-    label: Journal & Insights
-    type: file
-    path: data/journal.json
-    format: json
-    fields:
-      - name: posts
-        label: Posts
-        type: object
-        list: true
+                options:
+                  media: project-images
+              - { name: alt, label: Alt text or description, type: string, required: true }
+      - name: homepage-copy
+        label: Homepage sections
+        type: file
+        path: data/home.json
+        format: json
         fields:
-          - name: title
-            label: Post Title
-            type: string
-
-          - name: slug
-            label: URL Slug
-            type: string
-
-          - name: date
-            label: Publication Date
-            type: string
-
-          - name: category
-            label: Category
-            type: string
-
-          - name: coverImage
-            label: Cover Image
-            type: image
-
-          - name: coverImageAlt
-            label: Cover Image Alt Text (SEO)
-            type: string
-
-          - name: excerpt
-            label: Short Excerpt
-            type: text
-
-          - name: body
-            label: Post Body
-            type: text
-
-
-  - name: testimonials
-    label: Client Testimonials
-    type: file
-    path: data/testimonials.json
-    format: json
-    fields:
-      - name: testimonials
-        label: Testimonials
-        type: object
-        list: true
-        fields:
-          - name: quote
-            label: Client Testimonial
-            type: text
-
-          - name: name
-            label: Client Name
-            type: string
-
-          - name: title
-            label: Project / Client Role
-            type: string
-
-          - name: year
-            label: Year
-            type: string
-
-
-  - name: contact
-    label: Contact Details
-    type: file
-    path: data/contact.json
-    format: json
-    fields:
-      - name: email
-        label: Studio Email
-        type: string
-
-      - name: whatsappNumber
-        label: "WhatsApp Number (digits only, with country code)"
-        type: string
-
-      - name: phoneDisplay
-        label: "Phone Number (display format, e.g. +234 806 550 6222)"
-        type: string
-
-      - name: address
-        label: Studio Address
-        type: string
-
-      - name: instagramUsername
-        label: "Instagram Username (without @)"
-        type: string
-
-      - name: telegramUsername
-        label: "Telegram Username (without @)"
-        type: string
-
-
-  - name: services
-    label: Visualization Services
-    type: file
-    path: data/services.json
-    format: json
-    fields:
-      - name: services
-        label: Services
-        type: object
-        list: true
-        fields:
-          - name: title
-            label: Service Title
-            type: string
-
-          - name: description
-            label: Service Description
-            type: text
-
-
-  - name: rendering-packages
-    label: Rendering Packages
-    type: file
-    path: data/rendering-packages.json
-    format: json
-    fields:
-      - name: heroImage
-        label: Header Image
-        type: image
-
-      - name: heroImageAlt
-        label: Header Image Alt Text (SEO)
-        type: string
-
-      - name: categories
-        label: Rendering Categories
-        type: object
-        list: true
-        fields:
-          - name: id
-            label: "Category ID (short, no spaces)"
-            type: string
-
-          - name: label
-            label: Category Name
-            type: string
-
-          - name: image
-            label: Category Image
-            type: image
-
-          - name: imageAlt
-            label: Category Image Alt Text (SEO)
-            type: string
-
-          - name: tiers
-            label: Pricing Tiers
+          - name: hero
+            label: Hero copy
             type: object
-            list: true
             fields:
-              - name: name
-                label: Package Name
+              - { name: serviceLine, label: Service line, type: string, required: true }
+              - { name: locationLine, label: Location line, type: string, required: true }
+              - { name: lineOne, label: Heading line 1, type: string, required: true }
+              - { name: lineTwo, label: Heading line 2, type: string, required: true }
+              - name: rotatingWords
+                label: Rotating final words
                 type: string
-
-              - name: renderCount
-                label: Number of Renders
-                type: number
-
-              - name: bestFor
-                label: Best For
+                required: true
+                list:
+                  min: 4
+                  max: 4
+                description: Include punctuation exactly as it should appear.
+              - { name: description, label: Introduction, type: text, required: true }
+              - { name: workLinkLabel, label: Work link, type: string, required: true }
+              - { name: contactLabel, label: Contact action, type: string, required: true }
+          - name: manifesto
+            label: Manifesto
+            type: object
+            fields:
+              - { name: label, label: Section label, type: string, required: true }
+              - { name: statement, label: Statement, type: text, required: true }
+          - name: showcase
+            label: Featured showcase
+            type: object
+            fields:
+              - { name: label, label: Section label, type: string, required: true }
+              - { name: heading, label: Heading, type: string, required: true }
+              - { name: headingEmphasis, label: Emphasized heading, type: string, required: true }
+              - { name: description, label: Description, type: text, required: true }
+              - { name: portfolioLinkLabel, label: Portfolio link, type: string, required: true }
+              - name: featured
+                label: Featured card
+                type: object
+                fields:
+                  - name: image
+                    label: Image
+                    type: image
+                    required: true
+                    options:
+                      media: project-images
+                  - { name: alt, label: Image alt text, type: string, required: true }
+                  - { name: badge, label: Badge, type: string, required: true }
+                  - { name: linkLabel, label: Card link, type: string, required: true }
+                  - { name: title, label: Title, type: string, required: true }
+                  - { name: category, label: Category line, type: string, required: true }
+                  - { name: location, label: Location line, type: string, required: true }
+          - name: outcomes
+            label: Project outcomes
+            type: object
+            fields:
+              - { name: label, label: Section label, type: string, required: true }
+              - { name: heading, label: Heading, type: string, required: true }
+              - { name: headingEmphasis, label: Emphasized heading, type: string, required: true }
+              - { name: description, label: Description, type: text, required: true }
+              - name: items
+                label: Outcomes
+                type: object
+                list:
+                  collapsible: true
+                  summary: "{fields.label} — {fields.title}"
+                  min: 3
+                  max: 3
+                fields:
+                  - { name: label, label: Short label, type: string, required: true }
+                  - { name: title, label: Title, type: string, required: true }
+                  - { name: description, label: Description, type: text, required: true }
+          - name: processIntro
+            label: Process story
+            type: object
+            fields:
+              - { name: label, label: Section label, type: string, required: true }
+              - { name: heading, label: Heading, type: string, required: true }
+              - { name: headingEmphasis, label: Emphasized heading, type: string, required: true }
+              - { name: description, label: Description, type: text, required: true }
+              - name: media
+                label: Process images
+                type: object
+                list:
+                  collapsible: true
+                  summary: "Scene {index}"
+                  min: 4
+                  max: 4
+                fields:
+                  - name: image
+                    label: Image
+                    type: image
+                    required: true
+                    options:
+                      media: project-images
+          - name: capabilities
+            label: Capabilities section
+            type: object
+            fields:
+              - { name: label, label: Section label, type: string, required: true }
+              - { name: heading, label: Heading, type: string, required: true }
+              - { name: headingEmphasis, label: Emphasized heading, type: string, required: true }
+              - { name: linkLabel, label: Services link, type: string, required: true }
+          - name: studio
+            label: Studio section
+            type: object
+            fields:
+              - { name: label, label: Section label, type: string, required: true }
+              - { name: heading, label: Heading, type: string, required: true }
+              - { name: linkLabel, label: About link, type: string, required: true }
+              - { name: contactLabel, label: Contact action, type: string, required: true }
+          - name: contact
+            label: Contact section
+            type: object
+            fields:
+              - { name: label, label: Section label, type: string, required: true }
+              - { name: heading, label: Heading, type: string, required: true }
+              - { name: briefLabel, label: Brief label, type: string, required: true }
+              - { name: briefDescription, label: Brief guidance, type: text, required: true }
+              - name: briefItems
+                label: Suggested brief items
                 type: string
+                required: true
+                list:
+                  min: 1
+                  max: 6
+              - { name: emailLinkLabel, label: Email link, type: string, required: true }
+              - { name: availability, label: Availability line, type: string, required: true }
 
-              - name: turnaround
-                label: Turnaround Time
-                type: string
-
-              - name: price
-                label: Price in USD
-                type: number
-
-              - name: revisionsIncluded
-                label: Revisions Included
-                type: number
-
-      - name: addOns
-        label: Add-ons
-        type: object
-        list: true
+  - name: studio-services
+    label: Studio & services
+    type: group
+    items:
+      - name: about
+        label: About page
+        type: file
+        path: data/about.json
+        format: json
         fields:
-          - name: label
-            label: Add-on Name
-            type: string
+          - name: seo
+            component: seo
+          - name: hero
+            label: Hero
+            type: object
+            fields:
+              - { name: label, label: Eyebrow, type: string, required: true }
+              - { name: heading, label: Heading, type: text, required: true }
+          - name: labels
+            label: Section labels
+            type: object
+            fields:
+              - { name: introduction, label: Introduction, type: string, required: true }
+              - { name: process, label: Process, type: string, required: true }
+          - name: intro
+            label: Introduction paragraphs
+            type: text
+            required: true
+            list:
+              min: 1
+              max: 4
+          - name: process
+            label: Process steps
+            type: object
+            list:
+              collapsible: true
+              summary: "{fields.title} — {fields.stage}"
+              min: 1
+              max: 6
+            fields:
+              - { name: title, label: Title, type: string, required: true }
+              - { name: stage, label: Short stage label, type: string, required: true }
+              - { name: description, label: Description, type: text, required: true }
+          - name: cta
+            component: cta
 
-          - name: amountUsd
-            label: Price in USD
-            type: number
+      - name: services
+        label: Services page
+        type: file
+        path: data/services.json
+        format: json
+        fields:
+          - name: seo
+            component: seo
+          - name: hero
+            label: Hero
+            type: object
+            fields:
+              - { name: label, label: Eyebrow, type: string, required: true }
+              - { name: heading, label: Heading, type: text, required: true }
+          - name: intro
+            label: Services introduction
+            type: object
+            fields:
+              - { name: label, label: Section label, type: string, required: true }
+              - { name: description, label: Description, type: text, required: true }
+              - { name: enquiryLabel, label: Enquiry action, type: string, required: true }
+          - name: services
+            label: Services
+            type: object
+            list:
+              collapsible: true
+              summary: "{fields.title}"
+              min: 1
+              max: 12
+            fields:
+              - { name: title, label: Title, type: string, required: true }
+              - { name: description, label: Description, type: text, required: true }
+          - { name: audienceLabel, label: Audience section label, type: string, required: true }
+          - name: clientGroups
+            label: Client groups
+            type: object
+            list:
+              collapsible: true
+              summary: "{fields.title}"
+              min: 1
+              max: 6
+            fields:
+              - { name: title, label: Title, type: string, required: true }
+              - { name: description, label: Description, type: text, required: true }
+          - name: brief
+            label: Brief guidance
+            type: object
+            fields:
+              - { name: label, label: Eyebrow, type: string, required: true }
+              - { name: heading, label: Heading, type: string, required: true }
+              - { name: description, label: Description, type: text, required: true }
+              - name: items
+                label: Brief items
+                type: string
+                required: true
+                list:
+                  min: 1
+                  max: 6
+          - name: cta
+            component: cta
 
-          - name: isDelta
-            label: "Show + Prefix"
-            type: boolean
+  - name: portfolio
+    label: Portfolio
+    type: group
+    items:
+      - name: work-page
+        label: Work page copy
+        type: file
+        path: data/work.json
+        format: json
+        fields:
+          - name: seo
+            component: seo
+          - name: hero
+            label: Hero
+            type: object
+            fields:
+              - { name: label, label: Eyebrow, type: string, required: true }
+              - { name: heading, label: Heading, type: string, required: true }
+              - { name: description, label: Description, type: text, required: true }
+          - name: emptyState
+            label: Showreel or empty state
+            type: object
+            description: Shown until at least one published project exists.
+            fields:
+              - name: image
+                label: Image
+                type: image
+                required: true
+                options:
+                  media: project-images
+              - { name: imageAlt, label: Image alt text, type: string, required: true }
+              - { name: label, label: Eyebrow, type: string, required: true }
+              - { name: heading, label: Heading, type: string, required: true }
+              - { name: description, label: Description, type: text, required: true }
+              - { name: linkLabel, label: Contact link, type: string, required: true }
+      - name: projects
+        label: Projects
+        type: file
+        path: data/portfolio.json
+        format: json
+        fields:
+          - name: projects
+            label: Project entries
+            type: object
+            list:
+              collapsible: true
+              summary: "{fields.title} — {fields.year}"
+            fields:
+              - name: published
+                label: Published
+                type: boolean
+                default: false
+                description: Turn on only when the entry and all media are ready.
+              - name: featured
+                label: Featured
+                type: boolean
+                default: false
+                description: Featured projects appear before other published projects.
+              - { name: title, label: Project title, type: string, required: true }
+              - name: slug
+                label: URL slug
+                type: string
+                required: true
+                description: Lowercase letters, numbers, and hyphens only. Do not change after publishing.
+                pattern:
+                  regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                  message: Use lowercase letters, numbers, and hyphens only.
+              - { name: category, label: Category, type: string, required: true }
+              - { name: location, label: Location, type: string, required: true }
+              - name: year
+                label: Year
+                type: string
+                required: true
+                pattern:
+                  regex: "^[0-9]{4}$"
+                  message: Enter a four-digit year.
+              - name: image
+                label: Cover image
+                type: image
+                required: true
+                options:
+                  media: project-images
+              - name: alt_text
+                label: Cover image alt text
+                type: string
+                required: true
+                description: Describe the visible scene for accessibility and search.
+                options:
+                  maxlength: 160
+              - name: description
+                label: Short description
+                type: text
+                required: true
+                options:
+                  maxlength: 240
+              - name: write_up
+                label: Project narrative
+                type: text
+                description: Separate paragraphs with a blank line.
+              - name: gallery
+                label: Project gallery
+                type: object
+                list:
+                  collapsible: true
+                  summary: "{fields.alt_text}"
+                fields:
+                  - name: mediaType
+                    label: Media type
+                    type: select
+                    default: image
+                    options:
+                      values:
+                        - { label: Image, value: image }
+                        - { label: Video, value: video }
+                  - name: image
+                    label: Image
+                    type: image
+                    options:
+                      media: project-images
+                  - name: video
+                    label: Video
+                    type: file
+                    options:
+                      media: project-videos
+                  - name: videoPoster
+                    label: Video poster
+                    type: image
+                    options:
+                      media: project-images
+                  - { name: alt_text, label: Alt text or video description, type: string, required: true }

@@ -14,8 +14,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
 
   const projectRoutes: MetadataRoute.Sitemap = portfolioData.projects
-    .filter((p: any) => !p.title.startsWith('TODO') && !p.image.includes('PLACEHOLDER'))
-    .map((p: any) => ({
+    .filter((p) => p.published)
+    .map((p) => ({
     url: `${baseUrl}/work/${p.slug}`,
     lastModified: new Date(),
     changeFrequency: 'yearly' as const,

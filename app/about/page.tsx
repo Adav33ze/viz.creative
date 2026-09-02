@@ -3,14 +3,15 @@ import NavBar from '../components/NavBar'
 import ContactMenu from '../components/ContactMenu'
 import aboutData from '../../data/about.json'
 import contactData from '../../data/contact.json'
+import siteData from '../../data/site.json'
 
 export const metadata = {
-  title: 'About — Viz Creative',
-  description: 'Viz Creative is an interior design and 3D visualization studio based in Abuja, Nigeria.',
+  title: aboutData.seo.title,
+  description: aboutData.seo.description,
 }
 
 export default function AboutPage() {
-  const { intro, process } = aboutData as { intro: string[]; process: { title: string; description: string }[] }
+  const { hero, labels, intro, process, cta } = aboutData
   const { email, whatsappNumber } = contactData as { email: string; whatsappNumber: string }
   const contactMethods = [
     { label: 'WhatsApp', href: `https://wa.me/${whatsappNumber}` },
@@ -23,9 +24,9 @@ export default function AboutPage() {
 
       <header data-motion-section className="subpage-hero pt-40 pb-16 px-6 md:px-12 border-b border-white/10">
         <div className="max-w-7xl mx-auto">
-          <p className="text-xs uppercase tracking-widest text-white/50 mb-6">Who We Are</p>
+          <p className="text-xs uppercase tracking-widest text-white/50 mb-6">{hero.label}</p>
           <h1 className="font-display text-5xl md:text-7xl font-light tracking-tight leading-tight max-w-3xl">
-            Interior design and architectural visualization, built around how spaces are actually used.
+            {hero.heading}
           </h1>
         </div>
       </header>
@@ -33,7 +34,7 @@ export default function AboutPage() {
       <section data-motion-section className="py-24 px-6 md:px-12 border-b border-white/10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-4">
-            <p className="text-xs uppercase tracking-widest text-white/50">Introduction</p>
+            <p className="text-xs uppercase tracking-widest text-white/50">{labels.introduction}</p>
           </div>
           <div className="lg:col-span-8 space-y-5 text-white/70 font-light leading-relaxed text-sm md:text-base max-w-3xl">
             {intro.map((p, i) => (
@@ -46,7 +47,7 @@ export default function AboutPage() {
       <section data-motion-section className="py-24 px-6 md:px-12 border-b border-white/10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-4">
-            <p className="text-xs uppercase tracking-widest text-white/50">How We Work</p>
+            <p className="text-xs uppercase tracking-widest text-white/50">{labels.process}</p>
           </div>
           <div className="lg:col-span-8 divide-y divide-white/10">
             {process.map((step, i) => (
@@ -64,18 +65,18 @@ export default function AboutPage() {
 
       <section data-motion-section className="subpage-cta py-32 px-6 md:px-12 bg-brand-600 text-white">
         <div className="max-w-7xl mx-auto">
-          <p className="text-xs uppercase tracking-widest text-white/50 mb-6">Collaboration</p>
+          <p className="text-xs uppercase tracking-widest text-white/50 mb-6">{cta.label}</p>
           <h2 className="font-display text-4xl md:text-6xl font-light tracking-tight max-w-2xl mb-12 leading-tight">
-            Have a project in mind? Let's talk it through.
+            {cta.heading}
           </h2>
           <div className="max-w-xs">
-            <ContactMenu label="Get in Touch" methods={contactMethods} variant="button-dark" />
+            <ContactMenu label={cta.buttonLabel} methods={contactMethods} variant="button-dark" />
           </div>
         </div>
       </section>
 
       <footer className="bg-brand-600 text-white/50 text-[10px] uppercase tracking-widest py-8 px-6 md:px-12 flex justify-between items-center border-t border-white/10">
-        <p>© 2026 Viz Creative. All rights reserved.</p>
+        <p>{siteData.footer.copyright}</p>
         <Link href="/" className="hover:text-white transition-colors">Back to Home</Link>
       </footer>
     </div>

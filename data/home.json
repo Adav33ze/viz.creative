@@ -1,10 +1,15 @@
 {
   "hero": {
     "serviceLine": "Interior Design · 3D Visualization",
-    "locationLine": "Abuja, Nigeria · Working beyond borders",
+    "locationLine": "Abuja, Nigeria · Worldwide",
     "lineOne": "Ideas,",
     "lineTwo": "made",
-    "rotatingWords": ["inhabitable.", "visible.", "tangible.", "real."],
+    "rotatingWords": [
+      "inhabitable.",
+      "visible.",
+      "tangible.",
+      "real."
+    ],
     "description": "We help property teams, designers, and private clients align, approve, and experience a space before construction begins.",
     "workLinkLabel": "View our work",
     "contactLabel": "Start a project"
@@ -58,10 +63,18 @@
     "headingEmphasis": "Zero guesswork.",
     "description": "Scroll through the decisions that connect the first conversation to the final handover.",
     "media": [
-      { "image": "/images/portfolio/Hero-Fallback.jpg" },
-      { "image": "/images/portfolio/Hero-Fallback.jpg" },
-      { "image": "/images/portfolio/Hero-Fallback.jpg" },
-      { "image": "/images/portfolio/Hero-Fallback.jpg" }
+      {
+        "image": "/images/portfolio/Hero-Fallback.jpg"
+      },
+      {
+        "image": "/images/portfolio/Hero-Fallback.jpg"
+      },
+      {
+        "image": "/images/portfolio/Hero-Fallback.jpg"
+      },
+      {
+        "image": "/images/portfolio/Hero-Fallback.jpg"
+      }
     ]
   },
   "capabilities": {

@@ -1,11 +1,12 @@
 {
-  "mode": "single",
-  "image": "images/portfolio/Hero-Fallback.jpg",
+  "mode": "video",
+  "image": "/images/portfolio/Hero-Fallback .jpg",
   "alt": "Viz Creative interior visualization",
   "video": "videos/hero/Hero.mp4",
-  "videoPoster": "images/portfolio/Hero-Fallback.jpg",
+  "videoPoster": "/images/portfolio/Hero-Fallback .jpg",
   "slides": [
     {
+      "mediaType": "image",
       "image": "images/hero/hero-01.jpg",
       "alt": "Viz Creative interior visualization"
     }

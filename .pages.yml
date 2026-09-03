@@ -113,44 +113,69 @@ content:
     label: Homepage
     type: group
     items:
-      - name: hero-media
-        label: Hero media
+      - name: hero-settings
+        label: 1 · Hero display & fallback
         type: file
         path: data/hero.json
         format: json
         fields:
           - name: mode
-            label: Hero format
+            label: Active hero format
             type: select
             required: true
             default: single
+            description: Choose the format shown on the homepage, then edit its dedicated panel below.
             options:
               values:
                 - { label: Single image, value: single }
                 - { label: Slideshow, value: slideshow }
                 - { label: Video, value: video }
           - name: image
-            label: Main image
+            label: Main image / safety fallback
             type: image
             required: true
+            description: Used for Single image mode and as the fallback if a video cannot load.
             options:
               media: project-images
-          - { name: alt, label: Main image alt text, type: string, required: true }
+              categories: [image]
+              extensions: [jpg, jpeg, png, webp, avif]
+          - { name: alt, label: Main image description, type: string, required: true }
+      - name: hero-video
+        label: 2 · Hero video
+        type: file
+        path: data/hero-video.json
+        format: json
+        fields:
           - name: video
-            label: Hero video
+            label: Video file
             type: file
-            description: Used only in Video mode.
+            required: true
+            description: Upload an MP4 or WebM file. To show it, select Video in “Hero display & fallback”.
             options:
               media: hero-videos
+              categories: [video]
+              extensions: [mp4, webm]
+              rename: safe
           - name: videoPoster
-            label: Video poster
+            label: Loading poster
             type: image
+            required: true
+            description: A still image shown while the video loads or when autoplay is unavailable.
             options:
               media: project-images
-          - { name: videoAlt, label: Video description, type: string }
+              categories: [image]
+              extensions: [jpg, jpeg, png, webp, avif]
+          - { name: videoAlt, label: Video description, type: string, required: true, description: Describe the visible scene for accessibility. }
+      - name: hero-slideshow
+        label: 3 · Hero slideshow
+        type: file
+        path: data/hero-slides.json
+        format: json
+        fields:
           - name: slides
-            label: Slideshow slides
+            label: Slides
             type: object
+            description: To show these slides, select Slideshow in “Hero display & fallback”.
             list:
               collapsible: true
               summary: "{fields.alt}"
@@ -175,6 +200,8 @@ content:
                 type: file
                 options:
                   media: hero-videos
+                  categories: [video]
+                  extensions: [mp4, webm]
               - name: videoPoster
                 label: Video poster
                 type: image

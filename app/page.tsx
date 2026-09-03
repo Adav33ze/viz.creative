@@ -3,6 +3,8 @@ import type { CSSProperties } from 'react'
 import NavBar from './components/NavBar'
 import ContactMenu from './components/ContactMenu'
 import heroData from '../data/hero.json'
+import heroVideoData from '../data/hero-video.json'
+import heroSlidesData from '../data/hero-slides.json'
 import homeData from '../data/home.json'
 import siteData from '../data/site.json'
 import aboutData from '../data/about.json'
@@ -20,6 +22,7 @@ interface HeroData {
   image: string
   video?: string
   videoPoster?: string
+  videoAlt?: string
   alt: string
   slides: { image: string; alt: string }[]
 }
@@ -63,9 +66,10 @@ export default function Home() {
     mode: rawHero.mode ?? 'single',
     image: rawHero.image ?? '',
     alt: rawHero.alt ?? '',
-    slides: rawHero.slides ?? [],
-    video: rawHero.video,
-    videoPoster: rawHero.videoPoster,
+    slides: heroSlidesData.slides ?? [],
+    video: heroVideoData.video,
+    videoPoster: heroVideoData.videoPoster,
+    videoAlt: heroVideoData.videoAlt,
   }
   const isSlideshow = hero.mode === 'slideshow' && hero.slides.length > 1
   const isVideo = hero.mode === 'video' && Boolean(hero.video)
@@ -86,6 +90,7 @@ export default function Home() {
                 playsInline
                 preload="metadata"
                 poster={pathFor(hero.videoPoster || hero.image)}
+                aria-label={hero.videoAlt || hero.alt}
                 className="zoom-hero-media"
               >
                 <source src={pathFor(hero.video!)} />

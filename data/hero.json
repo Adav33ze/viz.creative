@@ -1,7 +1,7 @@
 {
-  "mode": "video",
+  "mode": "single",
   "image": "/images/portfolio/Hero-Fallback .jpg",
-  "alt": "Viz Creative interior visualization",
+  "alt": "Exterior Animation by Viz Creative ",
   "video": "videos/hero/Hero.mp4",
   "videoPoster": "/images/portfolio/Hero-Fallback .jpg",
   "slides": [

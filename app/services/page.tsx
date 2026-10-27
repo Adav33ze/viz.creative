@@ -4,11 +4,13 @@ import ContactMenu from '../components/ContactMenu'
 import servicesData from '../../data/services.json'
 import contactData from '../../data/contact.json'
 import siteData from '../../data/site.json'
+import { pageMetadata } from '../../lib/seo'
 
-export const metadata = {
+export const metadata = pageMetadata({
+  path: '/services',
   title: servicesData.seo.title,
   description: servicesData.seo.description,
-}
+})
 
 export default function ServicesPage() {
   const { hero, intro, services, clientGroups, audienceLabel, brief, cta } = servicesData

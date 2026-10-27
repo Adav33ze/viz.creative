@@ -33,6 +33,7 @@ export default function NavBar({ heroGradient = false }: NavBarProps) {
         `}
       >
         <Link
+          prefetch={false}
           href="/"
           className="text-[10px] font-medium uppercase tracking-[0.22em] text-white transition-opacity duration-300 hover:opacity-60"
         >
@@ -40,9 +41,9 @@ export default function NavBar({ heroGradient = false }: NavBarProps) {
         </Link>
 
         <div className="flex items-center gap-4 text-[9px] uppercase tracking-[0.15em] text-white md:gap-7 md:text-[10px] md:tracking-[0.18em]">
-          <Link href="/work" className="transition-colors hover:text-accent">{siteData.nav.work}</Link>
-          <Link href="/services" className="transition-colors hover:text-accent">{siteData.nav.services}</Link>
-          <Link href="/about" className="hidden transition-colors hover:text-accent sm:inline">{siteData.nav.about}</Link>
+          <Link prefetch={false} href="/work" className="transition-colors hover:text-accent">{siteData.nav.work}</Link>
+          <Link prefetch={false} href="/services" className="transition-colors hover:text-accent">{siteData.nav.services}</Link>
+          <Link prefetch={false} href="/about" className="hidden transition-colors hover:text-accent sm:inline">{siteData.nav.about}</Link>
           <Link href="/#contact" className="border-b border-accent pb-1 transition-colors hover:border-white">
             {siteData.nav.contact}
           </Link>

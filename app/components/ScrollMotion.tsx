@@ -1,41 +1,26 @@
 'use client'
 
-import { useLayoutEffect } from 'react'
+import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
 
 export default function ScrollMotion() {
   const pathname = usePathname()
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reducedMotion) return
 
-    const context = gsap.context(() => {
+    let cancelled = false
+    let revert: (() => void) | undefined
+    void Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(([{default:gsap}, {ScrollTrigger}]) => {
+      if (cancelled) return
+      gsap.registerPlugin(ScrollTrigger)
+      const context = gsap.context(() => {
       document.querySelectorAll<HTMLElement>('[data-motion-hero-mask]').forEach((hero) => {
         const frame = hero.querySelector<HTMLElement>('[data-hero-mask-frame]')
-        const lines = hero.querySelectorAll<HTMLElement>('[data-hero-line]')
-        const supporting = hero.querySelectorAll<HTMLElement>('.zoom-hero-topline, .zoom-hero-bottom, .zoom-hero-index')
         const content = hero.querySelector<HTMLElement>('.zoom-hero-content')
 
-        gsap.fromTo(lines, { yPercent: 106 }, {
-          yPercent: 0,
-          duration: .86,
-          stagger: .08,
-          ease: 'power4.out',
-          delay: .08,
-        })
-        gsap.fromTo(supporting, { y: 18, autoAlpha: 0 }, {
-          y: 0,
-          autoAlpha: 1,
-          duration: .7,
-          stagger: .08,
-          ease: 'power3.out',
-          delay: .38,
-        })
+        // Keep the first-screen copy visible while decorative scroll effects load.
 
         if (frame) {
           gsap.fromTo(frame, {
@@ -155,9 +140,11 @@ export default function ScrollMotion() {
       })
 
       ScrollTrigger.refresh()
-    })
+      })
+      revert = () => context.revert()
+    }).catch(() => { /* Content stays visible when motion code cannot load. */ })
 
-    return () => context.revert()
+    return () => { cancelled = true; revert?.() }
   }, [pathname])
 
   return null

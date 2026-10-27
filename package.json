@@ -3,22 +3,28 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "images:optimize": "node scripts/optimize-images.mjs",
+    "predev": "npm run images:optimize",
+    "prebuild": "npm run images:optimize",
+    "prebuild:sites": "npm run images:optimize",
     "dev": "next dev",
     "build": "next build",
     "build:sites": "next build && vite build --config vite.sites.config.mts",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check:seo": "node scripts/check-seo.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",
     "@react-three/fiber": "^9.7.0",
     "gsap": "^3.15.0",
-    "next": "^16.2.11",
+    "next": "^16.4.3",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "three": "^0.185.1"
   },
   "devDependencies": {
+    "sharp": "^0.35.5",
     "@openai/sites-vite-plugin": "^0.2.0",
     "@tailwindcss/postcss": "^4.3.1",
     "@types/node": "^20",
@@ -27,7 +33,7 @@
     "autoprefixer": "^10.5.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
-    "postcss": "^8.5.15",
+    "postcss": "^8.5.32",
     "tailwindcss": "^4.3.1",
     "typescript": "^5",
     "vite": "^8.2.2"

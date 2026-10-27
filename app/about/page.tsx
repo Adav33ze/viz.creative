@@ -4,11 +4,13 @@ import ContactMenu from '../components/ContactMenu'
 import aboutData from '../../data/about.json'
 import contactData from '../../data/contact.json'
 import siteData from '../../data/site.json'
+import { pageMetadata } from '../../lib/seo'
 
-export const metadata = {
+export const metadata = pageMetadata({
+  path: '/about',
   title: aboutData.seo.title,
   description: aboutData.seo.description,
-}
+})
 
 export default function AboutPage() {
   const { hero, labels, intro, process, cta } = aboutData

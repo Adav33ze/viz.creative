@@ -11,11 +11,11 @@ import aboutData from '../data/about.json'
 import servicesData from '../data/services.json'
 import portfolioData from '../data/portfolio.json'
 import contactData from '../data/contact.json'
+import {pageMetadata,defaultTitle,defaultDescription} from '../lib/seo'
+import ResponsiveImage from './components/ResponsiveImage'
+import HeroVideo from './components/HeroVideo'
 
-export const metadata = {
-  title: siteData.seo.title,
-  description: siteData.seo.description,
-}
+export const metadata = pageMetadata({title:defaultTitle,description:defaultDescription,path:'/'})
 
 interface HeroData {
   mode: 'single' | 'slideshow' | 'video'
@@ -83,29 +83,20 @@ export default function Home() {
         <div className="zoom-hero-sticky">
           <div data-hero-mask-frame className="zoom-hero-frame">
             {isVideo ? (
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                poster={pathFor(hero.videoPoster || hero.image)}
-                aria-label={hero.videoAlt || hero.alt}
-                className="zoom-hero-media"
-              >
-                <source src={pathFor(hero.video!)} />
-              </video>
+              <HeroVideo src={pathFor(hero.video!)} poster={hero.videoPoster || hero.image} alt={hero.videoAlt || hero.alt} />
             ) : isSlideshow ? (
               hero.slides.map((slide, index) => (
-                <img
+                <ResponsiveImage
                   key={slide.image}
                   src={pathFor(slide.image)}
                   alt={index === 0 ? slide.alt : ''}
+                  sizes="100vw"
+                  loading={index === 0 ? 'eager' : 'lazy'}
                   className={`zoom-hero-media hero-slide ${index === 0 ? 'hero-slide--active' : ''}`}
                 />
               ))
             ) : hero.image ? (
-              <img src={pathFor(hero.image)} alt={hero.alt} className="zoom-hero-media" />
+              <ResponsiveImage src={pathFor(hero.image)} alt={hero.alt} className="zoom-hero-media" sizes="100vw" loading="eager" fetchPriority="high" />
             ) : null}
             <div className="zoom-hero-shade" />
           </div>
@@ -115,7 +106,8 @@ export default function Home() {
               <p>{heroCopy.serviceLine}</p>
               <p>{heroCopy.locationLine}</p>
             </div>
-            <h1 className="zoom-hero-title" aria-label={`${heroCopy.lineOne} ${heroCopy.lineTwo} ${heroCopy.rotatingWords.join(', ')}`}>
+            <h1 className="zoom-hero-title" aria-label={`${heroCopy.lineOne} ${heroCopy.lineTwo} ${heroCopy.rotatingWords.join(', ')} Interior design and 3D visualization in Abuja`}>
+              <span className="sr-only">Interior design and 3D visualization in Abuja — </span>
               <span className="hero-line-clip"><span data-hero-line>{heroCopy.lineOne}</span></span>
               <span className="hero-line-clip zoom-hero-title-offset"><span data-hero-line>{heroCopy.lineTwo}</span></span>
               <span className="hero-line-clip hero-word-cycle-clip">
@@ -161,8 +153,9 @@ export default function Home() {
           </div>
           <Link href="/work" data-motion-card className="showcase-project group">
             <div className="showcase-project-media">
-              <img
+              <ResponsiveImage
                 src={pathFor(showcase.featured.image)}
+                sizes="(max-width: 767px) 100vw, 80vw"
                 alt={showcase.featured.alt}
                 data-portfolio-motion
               />
@@ -205,10 +198,10 @@ export default function Home() {
 
         <section data-story-root className="story-shell">
           <div className="story-visual" aria-hidden="true">
-            <div data-story-media="0" className="story-media story-media--wide is-active"><img src={pathFor(processIntro.media[0].image)} alt="" /></div>
-            <div data-story-media="1" className="story-media story-media--facade"><img src={pathFor(processIntro.media[1].image)} alt="" /></div>
-            <div data-story-media="2" className="story-media story-media--detail"><img src={pathFor(processIntro.media[2].image)} alt="" /></div>
-            <div data-story-media="3" className="story-media story-media--arrival"><img src={pathFor(processIntro.media[3].image)} alt="" /></div>
+            <div data-story-media="0" className="story-media story-media--wide is-active"><ResponsiveImage src={pathFor(processIntro.media[0].image)} sizes="(max-width: 767px) 100vw, 60vw" alt="Hotel lobby interior visualization by Viz Creative" /></div>
+            <div data-story-media="1" className="story-media story-media--facade"><ResponsiveImage src={pathFor(processIntro.media[1].image)} sizes="(max-width: 767px) 100vw, 60vw" alt="Interior materials and finishes study" /></div>
+            <div data-story-media="2" className="story-media story-media--detail"><ResponsiveImage src={pathFor(processIntro.media[2].image)} sizes="(max-width: 767px) 100vw, 60vw" alt="Bedroom interior visualization" /></div>
+            <div data-story-media="3" className="story-media story-media--arrival"><ResponsiveImage src={pathFor(processIntro.media[3].image)} sizes="(max-width: 767px) 100vw, 60vw" alt="Bedroom interior design details" /></div>
             <div className="story-progress"><span data-story-index>01</span><span>/ 04</span></div>
           </div>
           <div className="story-copy page-pad">

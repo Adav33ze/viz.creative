@@ -1,25 +1,16 @@
 import type { MetadataRoute } from 'next'
 import portfolioData from '../data/portfolio.json'
+import { canonicalUrl } from '../lib/seo'
 
 export const dynamic = 'force-static'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://www.vizcreative.works'
-
-  const staticRoutes: MetadataRoute.Sitemap = [
-    { url: baseUrl, lastModified: new Date(), changeFrequency: 'monthly', priority: 1 },
-    { url: `${baseUrl}/work`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${baseUrl}/services`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.8 },
-  ]
+  const staticRoutes: MetadataRoute.Sitemap = ['/', '/work', '/services', '/about'].map(path => ({url:canonicalUrl(path)}))
 
   const projectRoutes: MetadataRoute.Sitemap = portfolioData.projects
     .filter((p) => p.published)
     .map((p) => ({
-    url: `${baseUrl}/work/${p.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'yearly' as const,
-    priority: 0.7,
+    url: canonicalUrl(`/work/${p.slug}`),
     }))
 
   return [...staticRoutes, ...projectRoutes]

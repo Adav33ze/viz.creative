@@ -3,11 +3,14 @@ import NavBar from '../components/NavBar'
 import portfolioData from '../../data/portfolio.json'
 import workData from '../../data/work.json'
 import siteData from '../../data/site.json'
+import ResponsiveImage from '../components/ResponsiveImage'
+import { pageMetadata } from '../../lib/seo'
 
-export const metadata = {
+export const metadata = pageMetadata({
+  path: '/work',
   title: workData.seo.title,
   description: workData.seo.description,
-}
+})
 
 function pathFor(path: string) {
   return path.startsWith('/') ? path : `/${path}`
@@ -45,8 +48,9 @@ export default function WorkPage() {
               className="group flex flex-col"
             >
               <div className="relative aspect-[3/2] w-full bg-white/5 overflow-hidden mb-6 transition-shadow duration-700 ease-out group-hover:shadow-2xl group-hover:-translate-y-1">
-                <img
+                <ResponsiveImage
                   src={pathFor(project.image)}
+                  sizes="(max-width: 767px) 100vw, 50vw"
                   alt={project.alt_text}
                   data-motion-image
                   data-motion-zoom="strong"
@@ -74,8 +78,11 @@ export default function WorkPage() {
         </div> : (
           <section data-motion-section className="work-showreel">
             <div className="work-showreel-media">
-              <img
+              <ResponsiveImage
                 src={pathFor(emptyState.image)}
+                sizes="100vw"
+                loading="eager"
+                fetchPriority="high"
                 alt={emptyState.imageAlt}
                 data-portfolio-motion
               />

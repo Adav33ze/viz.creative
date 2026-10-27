@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation'
 import NavBar from '../../components/NavBar'
 import portfolioData from '../../../data/portfolio.json'
 import siteData from '../../../data/site.json'
+import ResponsiveImage from '../../components/ResponsiveImage'
+import StructuredData from '../../components/StructuredData'
+import { pageMetadata, siteUrl, canonicalUrl } from '../../../lib/seo'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -25,10 +28,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params
   const project = projects.find((item: any) => item.slug === slug)
-  return {
-    title: project ? `${project.title} — Viz Creative` : 'Project — Viz Creative',
-    description: project?.description,
-  }
+  if (!project) notFound()
+  return pageMetadata({title:`${project.title} | Viz Creative`,description:project.description || `${project.category} in ${project.location} by Viz Creative.`,path:`/work/${slug}`,image:project.image})
 }
 
 export default async function ProjectPage({ params }: PageProps) {
@@ -44,11 +45,22 @@ export default async function ProjectPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-brand-500 text-white selection:bg-white selection:text-brand-500">
+      <StructuredData data={[
+        {'@context':'https://schema.org','@type':'CreativeWork',name:project.title,description:project.description,url:canonicalUrl(`/work/${slug}`),creator:{'@id':`${siteUrl}/#studio`},image:new URL(pathFor(project.image),siteUrl).href},
+        {'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[
+          {'@type':'ListItem',position:1,name:'Home',item:canonicalUrl('/')},
+          {'@type':'ListItem',position:2,name:'Work',item:canonicalUrl('/work')},
+          {'@type':'ListItem',position:3,name:project.title,item:canonicalUrl(`/work/${slug}`)},
+        ]},
+      ]} />
       <NavBar forceLight />
 
       <section data-motion-hero className="relative h-[88vh] w-full bg-brand-600 overflow-hidden flex items-end p-6 md:p-12">
-        <img
+        <ResponsiveImage
           src={pathFor(project.image)}
+          sizes="100vw"
+          loading="eager"
+          fetchPriority="high"
           alt={project.alt_text}
           className="absolute inset-0 w-full h-full object-cover opacity-90"
         />
@@ -117,8 +129,9 @@ export default async function ProjectPage({ params }: PageProps) {
                     <source src={pathFor(item.video)} />
                   </video>
                 ) : item.image ? (
-                  <img
+                  <ResponsiveImage
                     src={pathFor(item.image)}
+                    sizes="(max-width: 767px) 100vw, 90vw"
                     alt={item.alt_text}
                     data-motion-image
                     data-motion-zoom="strong"
